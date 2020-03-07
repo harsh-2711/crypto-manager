@@ -2,6 +2,7 @@
     "name": "crypto-manager",
     "version": "0.0.1",
     "description": "Crypto Manager",
+    "homepage": "https://harsh-2711.github.io/crypto-manager/",
     "private": false,
     "main": "index.js",
     "dependencies": {
