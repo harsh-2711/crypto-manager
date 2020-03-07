@@ -37,7 +37,7 @@ material-dashboard-react
     │   │   └── material-dashboard-react.css
     │   └── img
     │       ├── apple-icon.png
-            ├── bitcoin.png
+    │       ├── bitcoin.png
     │       ├── cover.jpeg
     │       ├── faces
     │       │   └── marc.jpg
@@ -99,7 +99,7 @@ material-dashboard-react
     │   ├── app.jsx
     │   └── index.jsx
     ├── variables
-        ├── styles
+    │   ├── styles
     │   ├── charts.jsx
     │   ├── general.jsx
     │   └── styles.jsx
