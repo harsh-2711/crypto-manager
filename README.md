@@ -25,12 +25,6 @@ material-dashboard-react
 ├── CHANGELOG.md
 ├── LICENSE.md
 ├── README.md
-├── documentation
-│   ├── assets
-│   │   ├── css
-│   │   ├── img
-│   │   └── js
-│   └── tutorial-components.html
 ├── package.json
 ├── public
 │   ├── apple-icon.png
@@ -43,6 +37,7 @@ material-dashboard-react
     │   │   └── material-dashboard-react.css
     │   └── img
     │       ├── apple-icon.png
+            ├── bitcoin.png
     │       ├── cover.jpeg
     │       ├── faces
     │       │   └── marc.jpg
@@ -104,6 +99,7 @@ material-dashboard-react
     │   ├── app.jsx
     │   └── index.jsx
     ├── variables
+        ├── styles
     │   ├── charts.jsx
     │   ├── general.jsx
     │   └── styles.jsx
