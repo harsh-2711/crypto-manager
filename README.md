@@ -1,5 +1,7 @@
 # crypto-manager
 
+[![Build Status](https://travis-ci.com/harsh-2711/crypto-manager.svg?branch=master)](https://travis-ci.com/harsh-2711/crypto-manager)
+
 ## Quick start
 
 Quick start options:
