@@ -13,8 +13,8 @@
     - If virtual environment package is not installed, first do: `pip install virtualenv`
 - Start virtual environment: `source venv/bin/activate`
 - Install dependencies: `pip install -r requirements.txt`
-- Get a free api key from [nomics](https://p.nomics.com/cryptocurrency-bitcoin-api)
-- Create a `.env` file in the `api` folder and paste the api key: `touch .env && echo NOMICS_API_KEY=<api_key> >> .env`
+- Get your api keys from [Crypto Compare](https://min-api.cryptocompare.com/pricing) and [Nomics](https://p.nomics.com/cryptocurrency-bitcoin-api)
+- Create a `.env` file in the `api` folder and paste the api keys: `touch .env && echo CRYPTO_API_KEY=<crypto_key> >> .env && echo NOMICS_API_KEY=<nomics_key> >> .env`
 
 #### Starting the project
 
