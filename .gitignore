@@ -58,7 +58,8 @@ typings/
 .env
 
 # python
-env
+venv
+.env
 *.pyc
 
 # MacOS
