@@ -23,6 +23,7 @@
     },
     "scripts": {
         "start": "NODE_PATH=./src react-scripts start",
+        "start-api": "cd api && export FLASK_APP=app.py && flask run --no-debugger",
         "build": "NODE_PATH=./src react-scripts build",
         "test": "NODE_PATH=./src react-scripts test --env=jsdom",
         "eject": "react-scripts eject"
@@ -48,5 +49,6 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
-    }
+    },
+    "proxy": "http://localhost:5000"
 }
