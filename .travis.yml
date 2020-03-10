@@ -8,7 +8,6 @@ cache:
   - node_modules
 script:
   - CI="" npm run build
-  - yarn start-api
 
 deploy:
   provider: pages
