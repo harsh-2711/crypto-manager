@@ -38,7 +38,7 @@
 Following wil be the file structure upon a successful setup:
 
 ```
-material-dashboard-react
+crypto-manager
 ├── CHANGELOG.md
 ├── LICENSE.md
 ├── README.md
