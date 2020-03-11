@@ -57,5 +57,14 @@ typings/
 # dotenv environment variables file
 .env
 
+# Model Training
 __pycache__
 *.csv
+
+# python
+venv
+.env
+*.pyc
+
+# MacOS
+.DS_Store

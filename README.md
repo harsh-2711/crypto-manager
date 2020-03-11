@@ -2,11 +2,26 @@
 
 [![Build Status](https://travis-ci.com/harsh-2711/crypto-manager.svg?branch=master)](https://travis-ci.com/harsh-2711/crypto-manager)
 
-## Quick start
+## Installation
 
-Quick start options:
+- Clone the repo: `git clone https://github.com/harsh-2711/crypto-manager.git && cd crypto-manager`
 
-- Clone the repo: `git clone https://github.com/harsh-2711/crypto-manager.git`.
+#### For starting backend APIs:
+
+- Go to `api` directory: `cd api`
+- Create a virtual environment (optional): `virtualenv venv`
+    - If virtual environment package is not installed, first do: `pip install virtualenv`
+- Start virtual environment: `source venv/bin/activate`
+- Install dependencies: `pip install -r requirements.txt`
+- Get your api keys from [Crypto Compare](https://min-api.cryptocompare.com/pricing) and [Nomics](https://p.nomics.com/cryptocurrency-bitcoin-api)
+- Create a `.env` file in the `api` folder and paste the api keys: `touch .env && echo CRYPTO_API_KEY=<crypto_key> >> .env && echo NOMICS_API_KEY=<nomics_key> >> .env`
+
+#### Starting the project
+
+- Head over to main project directory
+- Install node dependencies: `npm install`
+- Start frontend: `npm start`
+- Start backend: `yarn start-api`
 
 ## Terminal Commands
 
