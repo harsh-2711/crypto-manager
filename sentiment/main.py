@@ -3,12 +3,17 @@ from model import *
 from sklearn.model_selection import train_test_split
 import pandas as pd
 import time
+<<<<<<< HEAD
 import torch
 
 if __name__ == '__main__':
 
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
+=======
+
+if __name__ == '__main__':
+>>>>>>> 40cde8f9b7a7dae1cb782c3cd2937f7f0dd5af88
     TwComments = pd.read_csv('tweetsbitcoin.csv',delimiter=",", index_col=None)
     TwComments = TwComments.dropna() 
     TwComments=TwComments.drop_duplicates()
