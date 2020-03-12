@@ -3,8 +3,12 @@ from model import *
 from sklearn.model_selection import train_test_split
 import pandas as pd
 import time
+import torch
 
 if __name__ == '__main__':
+
+    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+
     TwComments = pd.read_csv('tweetsbitcoin.csv',delimiter=",", index_col=None)
     TwComments = TwComments.dropna() 
     TwComments=TwComments.drop_duplicates()
@@ -73,10 +77,10 @@ if __name__ == '__main__':
     
     padded_word_indices = pad_sequences(word_indices)
     X_train, X_test, y_train, y_test = train_test_split(padded_word_indices, df['Price Diff'].values, test_size=0.1, shuffle=True)
-    X_train = Variable(torch.from_numpy(X_train).long())
-    y_train = Variable(torch.from_numpy(y_train).float())
+    X_train = Variable(torch.from_numpy(X_train).long().device())
+    y_train = Variable(torch.from_numpy(y_train).float().device())
 
-    model = SimpleClassifier(100, 32)
+    model = SimpleClassifier(100, 32).device()
     print(model.parameters())
     mseLoss = nn.MSELoss()
     optimizer = optim.Adam(model.parameters())
