@@ -215,6 +215,10 @@ def getMultiCryptosPriceConversions():
 ########################
 ####### Database #######
 ########################
+
+# Ref for boto3 setup: https://medium.com/@aastha6348/easy-wizy-crud-operations-in-dynamodb-with-boto3-6d2844f150b5
+
+# Creates a new account along with custom watchlist and portfolio
 @app.route('/user/account/create', methods=['POST'])
 def addNewUser():
 	try:
@@ -287,7 +291,27 @@ def addNewUser():
 		response = ERR_ACC
 	return response
 
-# Ref for boto3 setup: https://medium.com/@aastha6348/easy-wizy-crud-operations-in-dynamodb-with-boto3-6d2844f150b5
+
+# Temporary endpoint for checking Doughnut Chart functionality
+@app.route('/temp/data')
+def sendTempData():
+	data = {
+		"data": [
+			{
+				'coin': 'BTC',
+				'percentage': 50
+			},
+			{
+				'coin': 'ETH',
+				'percentage': 25
+			},
+			{
+				'coin': 'LTC',
+				'percentage': 25
+			}
+		]
+	}
+	return jsonify(data)
 
 if __name__ == '__main__':
     app.run()

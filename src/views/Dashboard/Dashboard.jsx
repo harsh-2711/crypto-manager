@@ -34,6 +34,8 @@ import {
 
 import dashboardStyle from "variables/styles/dashboardStyle";
 
+// import DoughnutChart from "../../components/Charts/Doughnut";
+
 class Dashboard extends React.Component {
   state = {
     value: 0
