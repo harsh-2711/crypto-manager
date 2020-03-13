@@ -4,6 +4,9 @@ import urllib
 import os
 from dotenv import load_dotenv
 import json
+import boto3
+import time
+import hashlib
 
 # Load secret API file
 load_dotenv()
@@ -12,9 +15,15 @@ NOMICS_API_KEY = os.getenv('NOMICS_API_KEY')
 
 # Errors
 ERR_RESP = "Page Not Found"
+ERR_ACC = "Account not created"
+
+# Initialize database
+dynamodb = boto3.resource('dynamodb')
+TABLE_NAME = 'crypto-manager'
 
 app = Flask(__name__)
 
+# TODO: Add SHA-256 or JSW token auth for secure APIs
 
 ########################
 ####### MetaData #######
@@ -201,6 +210,84 @@ def getMultiCryptosPriceConversions():
 		print(e)
 		response = ERR_RESP
 	return response
+
+
+########################
+####### Database #######
+########################
+@app.route('/user/account/create', methods=['POST'])
+def addNewUser():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		userID = str(int(time.time()))
+		response = table.put_item(
+			Item = {
+				'userID': userID,
+				'email': request.form['email'],
+				'password': hashlib.sha256(request.form['email'].encode()).hexdigest(),
+				'first_name': request.form['first_name'], 
+				'last_name': request.form['last_name'],
+				'aadhar_card_no': request.form['aadhar_card_no'],
+				'pan_card_no': request.form['pan_card_no'],
+				'funds': 0,
+				'invested_amount': 0,
+				'current_amount': 0,
+				'p_and_l': 0
+			} 
+		)
+
+		# TODO: Check if the entry is successful or not and then proceed with creating other tables
+
+		# Create watchlist and portfolio tables
+		table = dynamodb.create_table(
+			TableName=userID + "_watchlist",
+			KeySchema=[ 
+				{
+					'AttributeName': 'id',
+					'KeyType': 'HASH'
+				}
+			],
+			AttributeDefinitions=[
+				{
+					'AttributeName': 'id',
+					'AttributeType': 'N'
+				}
+			],
+			ProvisionedThroughput={
+				'ReadCapacityUnits': 5,
+				'WriteCapacityUnits': 5
+			}
+    	)
+
+		table = dynamodb.create_table(
+			TableName=userID + "_portfolio",
+			KeySchema=[ 
+				{
+					'AttributeName': 'id',
+					'KeyType': 'HASH'
+				}
+			],
+			AttributeDefinitions=[
+				{
+					'AttributeName': 'id',
+					'AttributeType': 'N'
+				}
+			],
+			ProvisionedThroughput={
+				'ReadCapacityUnits': 5,
+				'WriteCapacityUnits': 5
+			}
+    	)
+		
+		# TODO: Wait until the table is created (show some loading) -> It takes some time to allocate resources for a table in DynamoDB
+
+		response = jsonify(response['ResponseMetadata']['HTTPStatusCode'])
+	except Exception as e:
+		print(e)
+		response = ERR_ACC
+	return response
+
+# Ref for boto3 setup: https://medium.com/@aastha6348/easy-wizy-crud-operations-in-dynamodb-with-boto3-6d2844f150b5
 
 if __name__ == '__main__':
     app.run()
