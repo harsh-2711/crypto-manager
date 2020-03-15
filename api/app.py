@@ -17,6 +17,7 @@ NOMICS_API_KEY = os.getenv('NOMICS_API_KEY')
 ERR_RESP = "Page Not Found"
 ERR_ACC = "Account not created"
 ERR_UPD = "Data not updated"
+ERR_GET = "Data not found"
 
 # Initialize database
 dynamodb = boto3.resource('dynamodb')
@@ -292,6 +293,8 @@ def addNewUser():
 		response = ERR_ACC
 	return response
 
+# Account Related Queries
+
 # Updates funds
 @app.route('/user/update/funds', methods=['POST'])
 def updateUserFunds():
@@ -317,6 +320,23 @@ def updateUserFunds():
 	except Exception as e:
 		print(e)
 		response = ERR_UPD
+	return response
+
+# Get funds
+@app.route('/user/get/funds', methods=['GET'])
+def getUserFunds():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		scan = table.scan()
+		response = ""
+		for each in scan['Items']:
+			if each['email'] == request.form['email'] and each['aadhar_card_no'] == request.form['aadhar_card_no'] and each['pan_card_no'] == request.form['pan_card_no']:
+				response = each['funds']
+				break
+		return json.dumps(response)
+	except Exception as e:
+		print(e)
+		response = ERR_GET
 	return response
 
 # Updates invested amount
@@ -346,6 +366,23 @@ def updateUserInvestedAmount():
 		response = ERR_UPD
 	return response
 
+# Get invested amount
+@app.route('/user/get/invested_amount', methods=['GET'])
+def getUserInvestedAmount():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		scan = table.scan()
+		response = ""
+		for each in scan['Items']:
+			if each['email'] == request.form['email'] and each['aadhar_card_no'] == request.form['aadhar_card_no'] and each['pan_card_no'] == request.form['pan_card_no']:
+				response = each['invested_amount']
+				break
+		return json.dumps(response)
+	except Exception as e:
+		print(e)
+		response = ERR_GET
+	return response
+
 # Updates current amount
 @app.route('/user/update/current_amount', methods=['POST'])
 def updateUserCurrentAmount():
@@ -371,6 +408,23 @@ def updateUserCurrentAmount():
 	except Exception as e:
 		print(e)
 		response = ERR_UPD
+	return response
+
+# Get current amount
+@app.route('/user/get/current_amount', methods=['GET'])
+def getUserCurrentAmount():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		scan = table.scan()
+		response = ""
+		for each in scan['Items']:
+			if each['email'] == request.form['email'] and each['aadhar_card_no'] == request.form['aadhar_card_no'] and each['pan_card_no'] == request.form['pan_card_no']:
+				response = each['current_amount']
+				break
+		return json.dumps(response)
+	except Exception as e:
+		print(e)
+		response = ERR_GET
 	return response
 
 # Updates profit and loss
@@ -399,6 +453,28 @@ def updateUserProfitAndLoss():
 		print(e)
 		response = ERR_UPD
 	return response
+
+# Get profit and loss
+@app.route('/user/get/p_and_l', methods=['GET'])
+def getUserProfitAndLoss():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		scan = table.scan()
+		response = ""
+		for each in scan['Items']:
+			if each['email'] == request.form['email'] and each['aadhar_card_no'] == request.form['aadhar_card_no'] and each['pan_card_no'] == request.form['pan_card_no']:
+				response = each['p_and_l']
+				break
+		return json.dumps(response)
+	except Exception as e:
+		print(e)
+		response = ERR_GET
+	return response
+
+
+# Porfolio related queries
+
+
 
 # Temporary endpoint for checking Doughnut Chart functionality
 @app.route('/temp/data')
