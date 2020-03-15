@@ -16,6 +16,7 @@ NOMICS_API_KEY = os.getenv('NOMICS_API_KEY')
 # Errors
 ERR_RESP = "Page Not Found"
 ERR_ACC = "Account not created"
+ERR_UPD = "Data not updated"
 
 # Initialize database
 dynamodb = boto3.resource('dynamodb')
@@ -291,6 +292,113 @@ def addNewUser():
 		response = ERR_ACC
 	return response
 
+# Updates funds
+@app.route('/user/update/funds', methods=['POST'])
+def updateUserFunds():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		scan = table.scan()
+		response = ""
+		for each in scan['Items']:
+			if each['email'] == request.form['email'] and each['aadhar_card_no'] == request.form['aadhar_card_no'] and each['pan_card_no'] == request.form['pan_card_no']:
+				userID = each['userID']
+				response = table.update_item(
+					Key = {
+						'userID': userID
+					},
+					UpdateExpression = "set funds = :r",
+					ExpressionAttributeValues = {
+						':r': request.form['funds']
+					},
+					ReturnValues = "UPDATED_NEW"
+				)
+				break
+		return json.dumps(response)
+	except Exception as e:
+		print(e)
+		response = ERR_UPD
+	return response
+
+# Updates invested amount
+@app.route('/user/update/invested_amount', methods=['POST'])
+def updateUserInvestedAmount():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		scan = table.scan()
+		response = ""
+		for each in scan['Items']:
+			if each['email'] == request.form['email'] and each['aadhar_card_no'] == request.form['aadhar_card_no'] and each['pan_card_no'] == request.form['pan_card_no']:
+				userID = each['userID']
+				response = table.update_item(
+					Key = {
+						'userID': userID
+					},
+					UpdateExpression = "set invested_amount = :r",
+					ExpressionAttributeValues = {
+						':r': request.form['invested_amount']
+					},
+					ReturnValues = "UPDATED_NEW"
+				)
+				break
+		return json.dumps(response)
+	except Exception as e:
+		print(e)
+		response = ERR_UPD
+	return response
+
+# Updates current amount
+@app.route('/user/update/current_amount', methods=['POST'])
+def updateUserCurrentAmount():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		scan = table.scan()
+		response = ""
+		for each in scan['Items']:
+			if each['email'] == request.form['email'] and each['aadhar_card_no'] == request.form['aadhar_card_no'] and each['pan_card_no'] == request.form['pan_card_no']:
+				userID = each['userID']
+				response = table.update_item(
+					Key = {
+						'userID': userID
+					},
+					UpdateExpression = "set current_amount = :r",
+					ExpressionAttributeValues = {
+						':r': request.form['current_amount']
+					},
+					ReturnValues = "UPDATED_NEW"
+				)
+				break
+		return json.dumps(response)
+	except Exception as e:
+		print(e)
+		response = ERR_UPD
+	return response
+
+# Updates profit and loss
+@app.route('/user/update/p_and_l', methods=['POST'])
+def updateUserProfitAndLoss():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		scan = table.scan()
+		response = ""
+		for each in scan['Items']:
+			if each['email'] == request.form['email'] and each['aadhar_card_no'] == request.form['aadhar_card_no'] and each['pan_card_no'] == request.form['pan_card_no']:
+				userID = each['userID']
+				response = table.update_item(
+					Key = {
+						'userID': userID
+					},
+					UpdateExpression = "set p_and_l = :r",
+					ExpressionAttributeValues = {
+						':r': request.form['p_and_l']
+					},
+					ReturnValues = "UPDATED_NEW"
+				)
+				break
+		return json.dumps(response)
+	except Exception as e:
+		print(e)
+		response = ERR_UPD
+	return response
 
 # Temporary endpoint for checking Doughnut Chart functionality
 @app.route('/temp/data')
