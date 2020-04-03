@@ -25,6 +25,10 @@ TABLE_NAME = 'crypto-manager'
 
 app = Flask(__name__)
 
+@app.route('/', methods=['GET'])
+def helloWorld():
+	return jsonify('Welcome to Crypto Manager')
+
 # TODO: Add SHA-256 or JSW token auth for secure APIs
 
 ########################
@@ -227,18 +231,22 @@ def addNewUser():
 		table = dynamodb.Table(TABLE_NAME)
 		userID = str(int(time.time()))
 		response = table.put_item(
+			# TODO: Add regex for input fields
 			Item = {
 				'userID': userID,
 				'email': request.form['email'],
 				'password': hashlib.sha256(request.form['email'].encode()).hexdigest(),
-				'first_name': request.form['first_name'], 
+				'first_name': request.form['first_name'],
 				'last_name': request.form['last_name'],
 				'aadhar_card_no': request.form['aadhar_card_no'],
 				'pan_card_no': request.form['pan_card_no'],
+				'mobile_no': request.form['mobile_no'],
 				'funds': 0,
 				'invested_amount': 0,
 				'current_amount': 0,
-				'p_and_l': 0
+				'p_and_l': 0,
+				'watchlist_count': 0,
+				'portfolio_count': 0
 			} 
 		)
 
