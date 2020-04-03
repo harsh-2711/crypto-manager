@@ -25,7 +25,7 @@
     },
     "scripts": {
         "start": "NODE_PATH=./src react-scripts start",
-        "start-api": "cd api && export FLASK_APP=app.py && flask run --no-debugger",
+        "start-api": "cd api && source venv/bin/activate && export FLASK_APP=app.py && flask run --no-debugger",
         "build": "NODE_PATH=./src react-scripts build",
         "test": "NODE_PATH=./src react-scripts test --env=jsdom",
         "eject": "react-scripts eject"
