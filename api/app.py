@@ -30,6 +30,7 @@ def helloWorld():
 	return jsonify('Welcome to Crypto Manager')
 
 # TODO: Add SHA-256 or JSW token auth for secure APIs
+# TODO: Modify response of every endpoint -> statusCode and body
 
 ########################
 ####### MetaData #######
@@ -482,7 +483,91 @@ def getUserProfitAndLoss():
 
 # Porfolio related queries
 
+# Add crypto to portfolio
+# NOTE: Check for duplicate ticks while fetching data | selling the same tick with different quanity
+@app.route('/user/portfolio/add', methods=['POST'])
+def addCryptoToPorfolio():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		scan = table.scan()
+		userID = ""
+		cryptoCount = ""
+		response = ""
+		for each in scan['Items']:
+			if each['email'] == request.form['email'] and each['aadhar_card_no'] == request.form['aadhar_card_no'] and each['pan_card_no'] == request.form['pan_card_no']:
+				userID = each['userID']
+				cryptoCount = each['portfolio_count']
+				break
 
+		portfolioTable = dynamodb.Table(userID + "_portfolio")
+		response = portfolioTable.put_item(
+			Item = {
+				'id': int(time.time()),
+				'tick': request.form['tick'],
+				'quantity': request.form['quantity'],
+				'investmentPrice': request.form['investmentPrice']
+			} 
+		)
+
+		response = table.update_item(
+			Key = {
+				'userID': userID
+			},
+			UpdateExpression = "set portfolio_count = :r",
+			ExpressionAttributeValues = {
+				':r': str(int(cryptoCount) + 1)
+			},
+			ReturnValues = "UPDATED_NEW"
+		)
+		return json.dumps(response)
+	except Exception as e:
+		print(e)
+		response = ERR_UPD
+	return response
+
+# Remove crypto from portfolio
+@app.route('/user/portfolio/remove', methods=['POST'])
+def removeCryptoFromPorfolio():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		scan = table.scan()
+		userID = ""
+		cryptoCount = ""
+		response = ""
+		for each in scan['Items']:
+			if each['email'] == request.form['email'] and each['aadhar_card_no'] == request.form['aadhar_card_no'] and each['pan_card_no'] == request.form['pan_card_no']:
+				userID = each['userID']
+				cryptoCount = each['portfolio_count']
+				break
+
+		portfolioTable = dynamodb.Table(userID + "_portfolio")
+		deletionCount = 0
+		scan = portfolioTable.scan()
+		for each in scan['Items']:
+			if each['tick'] == request.form['tick']:
+				cryptoID = each['id']
+				portfolioTable.delete_item(
+					Key = {
+						'id': cryptoID
+					}
+				)
+				deletionCount += 1
+
+		response = table.update_item(
+			Key = {
+				'userID': userID
+			},
+			UpdateExpression = "set portfolio_count = :r",
+			ExpressionAttributeValues = {
+				':r': str(int(cryptoCount) - deletionCount)
+			},
+			ReturnValues = "UPDATED_NEW"
+		)
+		return json.dumps(response)
+	except Exception as e:
+		print(e)
+		response = ERR_UPD
+	return response
 
 # Temporary endpoint for checking Doughnut Chart functionality
 @app.route('/temp/data')
