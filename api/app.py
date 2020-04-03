@@ -18,6 +18,7 @@ ERR_RESP = "Page Not Found"
 ERR_ACC = "Account not created"
 ERR_UPD = "Data not updated"
 ERR_GET = "Data not found"
+ERR_EXT = "Data already exists"
 
 # Initialize database
 dynamodb = boto3.resource('dynamodb')
@@ -553,17 +554,145 @@ def removeCryptoFromPorfolio():
 				)
 				deletionCount += 1
 
-		response = table.update_item(
-			Key = {
-				'userID': userID
-			},
-			UpdateExpression = "set portfolio_count = :r",
-			ExpressionAttributeValues = {
-				':r': str(int(cryptoCount) - deletionCount)
-			},
-			ReturnValues = "UPDATED_NEW"
-		)
-		return json.dumps(response)
+		if deletionCount != 0:
+			response = table.update_item(
+				Key = {
+					'userID': userID
+				},
+				UpdateExpression = "set portfolio_count = :r",
+				ExpressionAttributeValues = {
+					':r': str(int(cryptoCount) - deletionCount)
+				},
+				ReturnValues = "UPDATED_NEW"
+			)
+			return json.dumps(response)
+		else:
+			response = ERR_GET
+	except Exception as e:
+		print(e)
+		response = ERR_UPD
+	return response
+
+# Fetch crypto data from portfolio
+
+
+# Watchlist related queries
+
+# Add crypto to watchlist
+@app.route('/user/watchlist/add', methods=['POST'])
+def addCryptoToWatchlist():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		scan = table.scan()
+		userID = ""
+		cryptoCount = ""
+		response = ""
+		for each in scan['Items']:
+			if each['email'] == request.form['email'] and each['aadhar_card_no'] == request.form['aadhar_card_no'] and each['pan_card_no'] == request.form['pan_card_no']:
+				userID = each['userID']
+				cryptoCount = each['watchlist_count']
+				break
+
+		watchListTable = dynamodb.Table(userID + "_watchlist")
+		scan = watchListTable.scan()
+		cryptoExist = False
+		for each in scan['Items']:
+			if each['tick'] == request.form['tick']:
+				cryptoExist = True
+				break
+
+		if not cryptoExist:
+			response = watchListTable.put_item(
+				Item = {
+					'id': int(time.time()),
+					'tick': request.form['tick']
+				}
+			)
+
+			response = table.update_item(
+				Key = {
+					'userID': userID
+				},
+				UpdateExpression = "set watchlist_count = :r",
+				ExpressionAttributeValues = {
+					':r': str(int(cryptoCount) + 1)
+				},
+				ReturnValues = "UPDATED_NEW"
+			)
+			return json.dumps(response)
+		else:
+			response = ERR_EXT
+	except Exception as e:
+		print(e)
+		response = ERR_UPD
+	return response
+
+# Remove crypto from watchlist
+@app.route('/user/watchlist/remove', methods=['POST'])
+def removeCryptoFromWatchlist():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		scan = table.scan()
+		userID = ""
+		cryptoCount = ""
+		response = ""
+		for each in scan['Items']:
+			if each['email'] == request.form['email'] and each['aadhar_card_no'] == request.form['aadhar_card_no'] and each['pan_card_no'] == request.form['pan_card_no']:
+				userID = each['userID']
+				cryptoCount = each['watchlist_count']
+				break
+
+		watchListTable = dynamodb.Table(userID + "_watchlist")
+		scan = watchListTable.scan()
+		cryptoExists = False
+		for each in scan['Items']:
+			if each['tick'] == request.form['tick']:
+				cryptoID = each['id']
+				watchListTable.delete_item(
+					Key = {
+						'id': cryptoID
+					}
+				)
+				cryptoExists = True
+
+		if cryptoExists:
+			response = table.update_item(
+				Key = {
+					'userID': userID
+				},
+				UpdateExpression = "set watchlist_count = :r",
+				ExpressionAttributeValues = {
+					':r': str(int(cryptoCount) - 1)
+				},
+				ReturnValues = "UPDATED_NEW"
+			)
+			return json.dumps(response)
+		else:
+			response = ERR_GET
+	except Exception as e:
+		print(e)
+		response = ERR_UPD
+	return response
+
+# Fetch user's watchlist
+@app.route('/user/watchlist/get', methods=['GET'])
+def getWatchlist():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		scan = table.scan()
+		userID = ""
+		response = ""
+		for each in scan['Items']:
+			if each['email'] == request.form['email'] and each['aadhar_card_no'] == request.form['aadhar_card_no'] and each['pan_card_no'] == request.form['pan_card_no']:
+				userID = each['userID']
+				break
+
+		watchListTable = dynamodb.Table(userID + "_watchlist")
+		watchlist = []
+		scan = watchListTable.scan()
+		for each in scan['Items']:
+			watchlist.append(each['tick'])
+		return jsonify(watchlist)
 	except Exception as e:
 		print(e)
 		response = ERR_UPD
