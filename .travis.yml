@@ -1,3 +1,7 @@
+sudo: required
+services:
+  - docker
+
 language: node_js
 warnings_are_errors: false
 
@@ -12,6 +16,9 @@ install:
   - pip install --user -r api/requirements.txt
 script:
   - CI="" npm run build
+
+after_success:
+  - sh .travis/deploy_dockerhub.sh
 
 deploy:
   provider: pages

@@ -25,7 +25,11 @@ ERR_EXT = "Data already exists"
 ERR_ORD = "Can't execute order"
 
 # Initialize database
-dynamodb = boto3.resource('dynamodb')
+dynamodb = boto3.resource('dynamodb',
+						aws_access_key_id=os.getenv('AWS_SERVER_PUBLIC_KEY'),
+						aws_secret_access_key=os.getenv('AWS_SERVER_SECRET_KEY'),
+						region_name=os.getenv('REGION_NAME')
+						)
 TABLE_NAME = 'crypto-manager'
 
 app = Flask(__name__)
