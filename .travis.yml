@@ -11,8 +11,6 @@ cache:
 install:
   - pip install --user -r api/requirements.txt
 script:
-  - npm test
-  - pytest api
   - CI="" npm run build
 
 deploy:
