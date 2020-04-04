@@ -39,7 +39,8 @@ import DoughnutChart from "../../components/Charts/Doughnut";
 
 class Dashboard extends React.Component {
   state = {
-    value: 0
+    value: 0,
+    sentiment: "Bullish"
   };
   handleChange = (event, value) => {
     this.setState({ value });
@@ -70,8 +71,15 @@ class Dashboard extends React.Component {
               <div className="dataOverview">
                 <Grid container spacing={1}>
                   {/* Overall score */}
-                  <Grid container item xs={12} spacing={3}>
-
+                  <Grid container item xs={12} spacing={3} className="avgScoreGrid">
+                    <div className="avgScore">
+                      <div>
+                        Avgerage Sentiment: 
+                        </div>
+                      <div className={this.state.sentiment === "Bearish" ? "bearishScore" : "bullishScore"}>
+                        {this.state.sentiment}
+                      </div>
+                    </div>
                   </Grid>
                   {/* Technical Analysis */}
                   <Grid container item xs={12} spacing={3}>

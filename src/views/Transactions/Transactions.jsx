@@ -21,9 +21,9 @@ function Transaction({ ...props}){
                     content={
                       <Table
                       tableHeaderColor="primary"
-                      tableHead={["Rank", "Name", "Price", "MarketCap", "Volume(24H)", "Circulating", "1h", "24h", "Weekly"]}
+                      tableHead={["Tick", "Name", "Price", "MarketCap", "Volume(24H)", "Circulating", "1h", "24h", "Weekly"]}
                       tableData={[
-                          ["Dakota Rice", "Niger", "Oud-Turnhout", "$36,738","Dakota Rice", "Niger", "Oud-Turnhout", "$36,738", "$36,738"],
+                          ["BTC", "Bitcoin", "Oud-Turnhout", "$36,738","Dakota Rice", "Niger", "Oud-Turnhout", "$36,738", "$36,738"],
                       ]}
                       />
                     }

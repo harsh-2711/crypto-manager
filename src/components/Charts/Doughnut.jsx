@@ -1,12 +1,12 @@
 import React, { Component } from 'react'  
 import axios from 'axios';  
-import {Doughnut} from 'react-chartjs-2';
+import {Doughnut, Chart} from 'react-chartjs-2';
 
 export class DoughnutChart extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {Data: {}};
+		this.state = {Data: {}, Investment: {}};
 	}
 
 	componentDidMount() {
@@ -30,9 +30,14 @@ export class DoughnutChart extends Component {
 				investmentPrice.push(record.investmentPrice);
 				totalInvestment += record.investmentPrice;
 			})
+
+			if(totalInvestment < 999999)
+				totalInvestment = Math.abs(totalInvestment) > 999 ? Math.sign(totalInvestment)*((Math.abs(totalInvestment)/1000).toFixed(1)) + 'K' : Math.sign(totalInvestment)*Math.abs(totalInvestment)
+			else
+				totalInvestment = Math.sign(totalInvestment)*((Math.abs(totalInvestment)/1000000).toFixed(1)) + 'M'
 			
 			// TODO: Handle more color options
-			let backgroundColors = ['#6200EA', '#304FFE', '#006064', '#004D40', '#AEEA00', '#00C853', '#F57F17', '#DD2C00', '#3E2723', '#37474F'];
+			let backgroundColors = ['#1b9868', '#ffd700', '#ec6d10', '#68228b', '#1134A6', '#Cs1807'];
 			
 			this.setState({
 				Data: {
@@ -44,13 +49,35 @@ export class DoughnutChart extends Component {
 							backgroundColor: backgroundColors
 						}
 					]
-				}
+				},
+				Investment: totalInvestment
 			})
+
+			const context = this;
+
+			Chart.pluginService.register({
+				beforeDraw: function(chart) {
+				var width = chart.chart.width,
+					height = chart.chart.height,
+					ctx = chart.chart.ctx;
+			
+				ctx.restore();
+				var fontSize = (height / 114).toFixed(2);
+				ctx.font = fontSize + "em sans-serif";
+				ctx.textBaseline = "middle";
+				
+				var text = context.state.Investment,
+					textX = Math.round((width - ctx.measureText(text).width) / 2),
+					textY = height / 1.9;
+			
+				ctx.fillText(text, textX, textY);
+				ctx.save();
+				}
+			});
 		})
 		.catch(response => {
 			console.log(response);
 		});
-	
 	}
 
 	render() {
@@ -61,7 +88,11 @@ export class DoughnutChart extends Component {
 								responsive: true,
 								maintainAspectRatio: true }}
 								onElementsClick={elems => {
-									console.log(elems[0]._index);
+									try {
+										console.log(elems[0]._index);
+									} catch (error) {
+										console.log(error)
+									}
 								}} />
 			</div>
 		)
