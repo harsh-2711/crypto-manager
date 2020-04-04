@@ -3,9 +3,13 @@ warnings_are_errors: false
 
 node_js:
   - "stable"
+python:
+  - "2.7"
 cache:
   directories:
   - node_modules
+install:
+  - pip install -r api/requirements.txt
 script:
   - CI="" npm run build
 
