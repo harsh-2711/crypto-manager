@@ -68,3 +68,6 @@ venv
 
 # MacOS
 .DS_Store
+
+# AWS
+.aws
