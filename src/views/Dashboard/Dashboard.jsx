@@ -15,7 +15,7 @@ import {
   Accessibility,
   
 } from "material-ui-icons";
-import { withStyles, Grid } from "material-ui";
+import { withStyles, Grid, Card, CardHeader, CardContent, Typography } from "material-ui";
 
 import {
   StatsCard,
@@ -33,8 +33,9 @@ import {
 } from "variables/charts";
 
 import dashboardStyle from "variables/styles/dashboardStyle";
+import "variables/css/dashboardStyle.css"
 
-// import DoughnutChart from "../../components/Charts/Doughnut";
+import DoughnutChart from "../../components/Charts/Doughnut";
 
 class Dashboard extends React.Component {
   state = {
@@ -50,6 +51,72 @@ class Dashboard extends React.Component {
   render() {
     return (
       <div>
+        {/* TODO: Make chart position static w.r.t other components */}
+        <Card className="doughnutCard">
+          <CardContent>
+          <Typography variant="title" component="h1">
+            Portfolio
+        </Typography>
+          </CardContent>
+          <Grid container> 
+            {/* Left Side */}
+            <ItemGrid xs={12} sm={6}>
+              <div className="doughnutChart">
+                <DoughnutChart />
+              </div>
+            </ItemGrid>
+            {/* Right Side */}
+            <ItemGrid xs={12} sm={6}>
+              <div className="dataOverview">
+                <Grid container spacing={1}>
+                  {/* Overall score */}
+                  <Grid container item xs={12} spacing={3}>
+
+                  </Grid>
+                  {/* Technical Analysis */}
+                  <Grid container item xs={12} spacing={3}>
+                    <ChartCard
+                      chart={
+                        <ChartistGraph
+                          className="ct-chart"
+                          data={emailsSubscriptionChart.data}
+                          type="Bar"
+                          options={emailsSubscriptionChart.options}
+                          responsiveOptions={emailsSubscriptionChart.responsiveOptions}
+                          listener={emailsSubscriptionChart.animation}
+                        />
+                      }
+                      chartColor="orange"
+                      title="Sentiment Analysis"
+                      text="Last Year Performance"
+                      statIcon={AccessTime}
+                      statText="Updated 2 minutes ago"
+                    />
+                  </Grid>
+                  {/* Sentimental Analysis */}
+                  <Grid container item xs={12} spacing={3}>
+                  <ChartCard
+                    chart={
+                      <ChartistGraph
+                        className="ct-chart"
+                        data={completedTasksChart.data}
+                        type="Line"
+                        options={completedTasksChart.options}
+                        listener={completedTasksChart.animation}
+                      />
+                    }
+                    chartColor="red"
+                    title="Technical Analysis"
+                    text="Last Year Performance"
+                    statIcon={AccessTime}
+                    statText="Updated 2 minutes ago"
+                  />
+                  </Grid>
+                </Grid>
+              </div>
+            </ItemGrid>
+          </Grid>
+        </Card>
         <Grid container>
           <ItemGrid xs={12} sm={6} md={3}>
             <StatsCard
@@ -103,18 +170,8 @@ class Dashboard extends React.Component {
               statText="Tracked from Wallet"
             />
           </ItemGrid>
-          {/* <ItemGrid xs={12} sm={6} md={3}>
-            <StatsCard
-              icon={Accessibility}
-              iconColor="blue"
-              title="Users"
-              description="+245"
-              statIcon={Update}
-              statText="Just Updated"
-            />
-          </ItemGrid>  */}
         </Grid>
-        <Grid container>
+        {/* <Grid container>
           <ItemGrid xs={12} sm={12} md={4}>
             <ChartCard
               chart={
@@ -143,68 +200,7 @@ class Dashboard extends React.Component {
               statText="Updated 4 minutes ago"
             />
           </ItemGrid>
-          <ItemGrid xs={12} sm={12} md={4}>
-            <ChartCard
-              chart={
-                <ChartistGraph
-                  className="ct-chart"
-                  data={emailsSubscriptionChart.data}
-                  type="Bar"
-                  options={emailsSubscriptionChart.options}
-                  responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                  listener={emailsSubscriptionChart.animation}
-                />
-              }
-              chartColor="orange"
-              title="Sentiment Analysis"
-              text="Last Year Performance"
-              statIcon={AccessTime}
-              statText="Updated 2 minutes ago"
-            />
-          </ItemGrid>
-          <ItemGrid xs={12} sm={12} md={4}>
-            <ChartCard
-              chart={
-                <ChartistGraph
-                  className="ct-chart"
-                  data={completedTasksChart.data}
-                  type="Line"
-                  options={completedTasksChart.options}
-                  listener={completedTasksChart.animation}
-                />
-              }
-              chartColor="red"
-              title="Technical Analysis"
-              text="Last Year Performance"
-              statIcon={AccessTime}
-              statText="Updated 2 minutes ago"
-            />
-          </ItemGrid>
-        </Grid>
-         {/* <Grid container>
-          <ItemGrid xs={12} sm={12} md={6}>
-            <TasksCard />
-          </ItemGrid>
-            <ItemGrid xs={12} sm={12} md={6}>
-            <RegularCard
-              headerColor="orange"
-              cardTitle="Employees Stats"
-              cardSubtitle="New employees on 15th September, 2016"
-              content={
-                <Table
-                  tableHeaderColor="warning"
-                  tableHead={["ID", "Name", "Salary", "Country"]}
-                  tableData={[
-                    ["1", "Dakota Rice", "$36,738", "Niger"],
-                    ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                    ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                    ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                  ]}
-                />
-              }
-            />
-          </ItemGrid>
-        </Grid>  */}
+        </Grid> */}
       </div>
     );
   }

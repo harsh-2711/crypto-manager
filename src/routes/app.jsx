@@ -22,7 +22,7 @@ const appRoutes = [
   {
     path: "/dashboard",
     sidebarName: "Dashboard",
-    navbarName: "CryptoLive Dashboard",
+    navbarName: "Crypto Manager Dashboard",
     icon: Dashboard,
     component: DashboardPage
   },

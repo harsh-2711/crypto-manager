@@ -659,7 +659,7 @@ def sellCryptoFromPorfolio():
 	return response
 
 # Fetch crypto data from portfolio
-@app.route('/user/portfolio/get', methods=['GET'])
+@app.route('/user/portfolio/get', methods=['POST'])
 def getPorfolio():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -675,7 +675,7 @@ def getPorfolio():
 		portfolio = []
 		scan = portfolioTable.scan()
 		for each in scan['Items']:
-			portfolio.append({'tick': each['tick'], 'quantity': each['quantity'], 'investmentPrice': each['investmentPrice']})
+			portfolio.append({'tick': each['tick'], 'quantity': int(each['quantity']), 'investmentPrice': float(each['investmentPrice'])})
 		return jsonify(portfolio)
 	except Exception as e:
 		print(e)
@@ -782,7 +782,7 @@ def removeCryptoFromWatchlist():
 	return response
 
 # Fetch user's watchlist
-@app.route('/user/watchlist/get', methods=['GET'])
+@app.route('/user/watchlist/get', methods=['POST'])
 def getWatchlist():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
