@@ -1,5 +1,6 @@
 import time
 from flask import Flask, jsonify, request
+from flask_cors import CORS, cross_origin
 import urllib
 import os
 from dotenv import load_dotenv
@@ -33,8 +34,10 @@ dynamodb = boto3.resource('dynamodb',
 TABLE_NAME = 'crypto-manager'
 
 app = Flask(__name__)
+cors = CORS(app)
 
 @app.route('/', methods=['GET'])
+@cross_origin()
 def helloWorld():
 	return jsonify('Welcome to Crypto Manager')
 
@@ -48,6 +51,7 @@ def helloWorld():
 # Getting metadata for any crypto
 # 			- Eg: Name, Description, Images, etc.
 @app.route('/crypto/metadata/<tick>')
+@cross_origin()
 def getCryptoMetaData(tick):
 	url = "https://api.nomics.com/v1/currencies?key=" + NOMICS_API_KEY + "&ids=" + tick
 	try:
@@ -59,6 +63,7 @@ def getCryptoMetaData(tick):
 
 # Returns list of available cryptos
 @app.route('/crypto/list')
+@cross_origin()
 def getCryptosList():
 	url = "https://min-api.cryptocompare.com/data/blockchain/list?api_key=" + CRYPTO_API_KEY
 	try:
@@ -80,6 +85,7 @@ def getCryptosList():
 
 # Daily tick data
 @app.route('/crypto/data/daily', methods=['GET'])
+@cross_origin()
 def getDailyOHLCV():
 	url = "https://min-api.cryptocompare.com/data/v2/histoday?fsym=" + request.form['tick'] + "&tsym=" + request.form['currency'] + "&limit=" + request.form['limit'] + "&api_key=" + CRYPTO_API_KEY
 	try:
@@ -96,6 +102,7 @@ def getDailyOHLCV():
 
 # Hourly tick data
 @app.route('/crypto/data/hourly', methods=['GET'])
+@cross_origin()
 def getHourlyOHLCV():
 	url = "https://min-api.cryptocompare.com/data/v2/histohour?fsym=" + request.form['tick'] + "&tsym=" + request.form['currency'] + "&limit=" + request.form['limit'] + "&api_key=" + CRYPTO_API_KEY
 	try:
@@ -112,6 +119,7 @@ def getHourlyOHLCV():
 
 # Minute by minute tick data
 @app.route('/crypto/data/minute', methods=['GET'])
+@cross_origin()
 def getMinuteOHLCV():
 	url = "https://min-api.cryptocompare.com/data/v2/histominute?fsym=" + request.form['tick'] + "&tsym=" + request.form['currency'] + "&limit=" + request.form['limit'] + "&api_key=" + CRYPTO_API_KEY
 	try:
@@ -133,6 +141,7 @@ def getMinuteOHLCV():
 
 # Trading signals for the provided tick
 @app.route('/crypto/signal/<tick>')
+@cross_origin()
 def getTradingSignals(tick):
 	url = "https://min-api.cryptocompare.com/data/tradingsignals/intotheblock/latest?fsym=" + tick + "&api_key=" + CRYPTO_API_KEY
 	try:
@@ -154,6 +163,7 @@ def getTradingSignals(tick):
 
 # Latest social data for all active cryptos
 @app.route('/crypto/social/latest')
+@cross_origin()
 def getLatestSocialData():
 	url = "https://min-api.cryptocompare.com/data/social/coin/latest?api_key=" + CRYPTO_API_KEY
 	try:
@@ -170,6 +180,7 @@ def getLatestSocialData():
 
 # Historical social data for all active cryptos
 @app.route('/crypto/social/historical', methods=['GET'])
+@cross_origin()
 def getHistoricalSocialData():
 	url = "https://min-api.cryptocompare.com/data/social/coin/histo/day?limit=" + request.form['limit'] + "&api_key=" + CRYPTO_API_KEY
 	try:
@@ -191,6 +202,7 @@ def getHistoricalSocialData():
 
 # Returns latest news with crypto id as tags
 @app.route('/crypto/news/latest')
+@cross_origin()
 def getLatestNews():
 	url = "https://min-api.cryptocompare.com/data/v2/news/?lang=EN&api_key=" + CRYPTO_API_KEY
 	try:
@@ -207,6 +219,7 @@ def getLatestNews():
 
 # Returns price of single crypto in given currencies format
 @app.route('/crypto/price/single', methods=['GET'])
+@cross_origin()
 def getSingleCryptoPriceConversions():
 	url = "https://min-api.cryptocompare.com/data/price?fsym=" + request.form['tick'] + "&tsyms=" + request.form['currency_list'] + "&api_key=" + CRYPTO_API_KEY
 	try:
@@ -218,6 +231,7 @@ def getSingleCryptoPriceConversions():
 
 # Returns price of provided cryptos in given currencies format
 @app.route('/crypto/price/multiple', methods=['GET'])
+@cross_origin()
 def getMultiCryptosPriceConversions():
 	url = "https://min-api.cryptocompare.com/data/pricemulti?fsyms=" + request.form['ticks'] + "&tsyms=" + request.form['currency_list'] + "&api_key=" + CRYPTO_API_KEY
 	try:
@@ -236,6 +250,7 @@ def getMultiCryptosPriceConversions():
 
 # Creates a new account along with custom watchlist and portfolio
 @app.route('/user/account/create', methods=['POST'])
+@cross_origin()
 def addNewUser():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -315,6 +330,7 @@ def addNewUser():
 
 # Updates funds
 @app.route('/user/update/funds', methods=['POST'])
+@cross_origin()
 def updateUserFunds():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -342,6 +358,7 @@ def updateUserFunds():
 
 # Get funds
 @app.route('/user/get/funds', methods=['GET'])
+@cross_origin()
 def getUserFunds():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -359,6 +376,7 @@ def getUserFunds():
 
 # Updates invested amount
 @app.route('/user/update/invested_amount', methods=['POST'])
+@cross_origin()
 def updateUserInvestedAmount():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -386,6 +404,7 @@ def updateUserInvestedAmount():
 
 # Get invested amount
 @app.route('/user/get/invested_amount', methods=['GET'])
+@cross_origin()
 def getUserInvestedAmount():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -403,6 +422,7 @@ def getUserInvestedAmount():
 
 # Updates current amount
 @app.route('/user/update/current_amount', methods=['POST'])
+@cross_origin()
 def updateUserCurrentAmount():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -430,6 +450,7 @@ def updateUserCurrentAmount():
 
 # Get current amount
 @app.route('/user/get/current_amount', methods=['GET'])
+@cross_origin()
 def getUserCurrentAmount():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -447,6 +468,7 @@ def getUserCurrentAmount():
 
 # Updates profit and loss
 @app.route('/user/update/p_and_l', methods=['POST'])
+@cross_origin()
 def updateUserProfitAndLoss():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -474,6 +496,7 @@ def updateUserProfitAndLoss():
 
 # Get profit and loss
 @app.route('/user/get/p_and_l', methods=['GET'])
+@cross_origin()
 def getUserProfitAndLoss():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -494,6 +517,7 @@ def getUserProfitAndLoss():
 
 # Add crypto to portfolio
 @app.route('/user/portfolio/add', methods=['POST'])
+@cross_origin()
 def addCryptoToPorfolio():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -535,6 +559,7 @@ def addCryptoToPorfolio():
 
 # Remove all instances of crypto from portfolio
 @app.route('/user/portfolio/remove', methods=['POST'])
+@cross_origin()
 def removeCryptoFromPorfolio():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -582,6 +607,7 @@ def removeCryptoFromPorfolio():
 
 # Remove specific instances of crypto from portfolio
 @app.route('/user/portfolio/sell', methods=['POST'])
+@cross_origin()
 def sellCryptoFromPorfolio():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -664,6 +690,7 @@ def sellCryptoFromPorfolio():
 
 # Fetch crypto data from portfolio
 @app.route('/user/portfolio/get', methods=['POST'])
+@cross_origin()
 def getPorfolio():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -691,6 +718,7 @@ def getPorfolio():
 
 # Add crypto to watchlist
 @app.route('/user/watchlist/add', methods=['POST'])
+@cross_origin()
 def addCryptoToWatchlist():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -740,6 +768,7 @@ def addCryptoToWatchlist():
 
 # Remove crypto from watchlist
 @app.route('/user/watchlist/remove', methods=['POST'])
+@cross_origin()
 def removeCryptoFromWatchlist():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -787,6 +816,7 @@ def removeCryptoFromWatchlist():
 
 # Fetch user's watchlist
 @app.route('/user/watchlist/get', methods=['POST'])
+@cross_origin()
 def getWatchlist():
 	try:
 		table = dynamodb.Table(TABLE_NAME)
@@ -811,6 +841,7 @@ def getWatchlist():
 
 # Temporary endpoint for checking Doughnut Chart functionality
 @app.route('/temp/data')
+@cross_origin()
 def sendTempData():
 	data = {
 		"data": [
