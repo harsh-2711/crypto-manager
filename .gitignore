@@ -65,6 +65,10 @@ __pycache__
 venv
 .env
 *.pyc
+.pytest_cache
 
 # MacOS
 .DS_Store
+
+# AWS
+.aws

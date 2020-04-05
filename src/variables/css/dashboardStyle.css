@@ -1,0 +1,48 @@
+.chartjs-render-monitor {
+    align-self: auto;
+    height: 200px
+}
+
+.doughnutCard {
+    margin-bottom: 50px;
+    padding-bottom: 30px;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.dataOverview {
+    margin-left: 30px;
+}
+
+.doughnutChart {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.avgScore {
+    margin-bottom: 20px;
+    display: flex;
+    font-size: 1.6em;
+    font-weight: 200;
+}
+
+.avgScoreGrid {
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    justify-content: center;
+}
+
+.bearishScore {
+    margin-left: 5px;
+    color: #FF2800;
+    font-weight: 400;
+}
+
+.bullishScore {
+    margin-left: 5px;
+    color: #2E8B57;
+    font-weight: 400;
+}

@@ -1,13 +1,27 @@
+sudo: required
+services:
+  - docker
+
 language: node_js
 warnings_are_errors: false
 
 node_js:
   - "stable"
+python:
+  - "2.7"
 cache:
   directories:
   - node_modules
+install:
+  - pip install --user -r api/requirements.txt
 script:
+  - npm test
+  - pytest
   - CI="" npm run build
+
+after_success:
+  - sh .travis/deploy_dockerhub.sh
+  – test "$TRAVIS_BRANCH" = "master" && sh .travis/deploy_heroku.sh
 
 deploy:
   provider: pages

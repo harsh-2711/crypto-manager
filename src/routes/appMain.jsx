@@ -1,6 +1,7 @@
 import DashboardPage from "views/Dashboard/Dashboard.jsx";
 import UserProfile from "views/UserProfile/UserProfile.jsx";
 import TableList from "views/TableList/TableList.jsx";
+import Transactions from "views/Transactions/Transactions.jsx";
 import NotificationsPage from "views/Notifications/Notifications.jsx";
 
 import {
@@ -18,7 +19,7 @@ const appRoutes = [
   {
     path: "/dashboard",
     sidebarName: "Dashboard",
-    navbarName: "CryptoLive Dashboard",
+    navbarName: "Crypto Manager Dashboard",
     icon: Dashboard,
     component: DashboardPage
   },
@@ -37,11 +38,11 @@ const appRoutes = [
     component: TableList
   },
   {
-    path: "/table",
+    path: "/transactions",
     sidebarName: "Transactions",
-    navbarName: "Crypto Currencies List",
+    navbarName: "Transactions",
     icon: AttachMoney,
-    component: TableList
+    component: Transactions
   },
   {
     path: "/table",
