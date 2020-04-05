@@ -7,11 +7,11 @@ import time
 
 ##Code for fetching tweets with their's details using standard API
 
-####input valid keys below
-consumer_key = 'xxxxxxxxxxxxx123456789'
-consumer_secret = 'xxxxxxxxxxxxx123456789'
-access_token = 'xxxxxxxxxxxxx123456789'
-access_token_secret = 'xxxxxxxxxxxxx123456789'
+####insert valid keys below
+consumer_key = 'vgnSRlDDLhMHdukzJhlWAaPXq'
+consumer_secret = 'ryHjEr6fgwM4wf263qe6eEegwrYcWIrBhGoqEHNihhGzPjFq0W'
+access_token = '794799425587650560-VBN8MEyzFYhEGGByEeGnfnbfS8NwMow'
+access_token_secret = 'mq5Fdr8vWsi2QuCyFWDVE7cDGwm8nWKf3TYV68GMxCgJR'
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -21,12 +21,12 @@ list=['bitcoin','ETH','XRP','LTC','BCH','Monero','TRON','Zcash','Binance coin','
 #index cryptocurrencies
 #1    bitcoin
 #2    Ethereum
-#3     Ripple
-#4     Litecoin
-#5     bitcoin cash
-#6     monero
-#7     TRON
-#8     Zcash
+#3    Ripple
+#4    Litecoin
+#5    bitcoin cash
+#6    monero
+#7    TRON
+#8    Zcash
 #9    Binance coin
 #10   Huobi token
 # Open/Create a file to append data
