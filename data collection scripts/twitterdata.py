@@ -22,7 +22,7 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth,wait_on_rate_limit=True)
 
-list=['bitcoin','ETH','XRP','LTC','BCH','Monero','TRON','Zcash','Binance coin','Huobi token'];
+list=['bitcoin','ETH','XRP','LTC','BCH','Monero','TRON','Zcash','Binance coin','Huobi token']
 #index cryptocurrencies
 # 1    bitcoin
 # 2    Ethereum
@@ -39,10 +39,10 @@ csvFile =open('tweet_data1.csv', 'a')
 #Use csv Writer
 c=0
 csvWriter = csv.writer(csvFile,lineterminator='\n')
-csvWriter.writerow(['index','username','tweet','likes_count','retweet_count','date & time']);
+csvWriter.writerow(['index','username','tweet','likes_count','retweet_count','date & time'])
 for i in range(len(list)):
         s=list[i]
         print(i)
         for tweet in tweepy.Cursor(api.search,q=s,lang="en",count=1000,since="2020-03-29").items():
                 print(tweet.created_at)
-                csvWriter.writerow([i+1,tweet.user.screen_name,tweet.text.encode('utf-8'),tweet.favorite_count,tweet.retweet_count,tweet.created_at]);
+                csvWriter.writerow([i+1,tweet.user.screen_name,tweet.text.encode('utf-8'),tweet.favorite_count,tweet.retweet_count,tweet.created_at])
