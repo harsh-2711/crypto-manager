@@ -26,6 +26,33 @@
 - Navigate to `http://localhost:3000/`
 - (optional) Run in terminal `npm i -g cross-env`
 
+## Tests
+
+#### Frontend tests
+
+For testing react components and functions,
+
+- Head over to root directory
+- Write `npm test` in terminal
+
+For adding new frontend tests, go to `__tests__` folder in `src` directory. Please follow the below convention to add new test files -
+
+- For adding component tests - `<component_name>.test.js`
+- For adding functional tests - `<package_name>_<function_name>.test.js`
+- For adding unit tests - `<package_name>_unit.test.js`
+
+#### Backend tests
+
+For testing flask server and API endpoints,
+
+- Head over to root directory OR into `api` folder
+- Write `pytest` in terminal
+
+For adding new backend tests, go to `tests` folder in `api` directory. Please follow the below convention to add new test files -
+
+- For adding functional tests - `test_functional_<function_name>.py`
+- For adding unit tests - `test_unit.py`
+
 ### What's included
 
 Following wil be the file structure upon a successful setup:
