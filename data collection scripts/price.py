@@ -1,6 +1,8 @@
 #Storing Date,High price,Low price,Open Price,Close Price  of 10 different crypto currencies for last 8 days
 import requests
 from datetime import datetime
+import pandas as pd
+
 
 to_symbol = 'USD'
 datetime_interval = 'day'
