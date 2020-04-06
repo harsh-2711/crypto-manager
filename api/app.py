@@ -8,7 +8,9 @@ import json
 import boto3
 import time
 import hashlib
-
+import torch
+import numpy as np
+from torch import Variable
 # import ssl
 # ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -860,6 +862,30 @@ def sendTempData():
 		]
 	}
 	return jsonify(data)
+
+
+# ML - API
+
+#Prediction for the next k-datapoints
+@app.route('/ml/prediction/<k_data>')
+@cross_origin()
+def prediction(k_data):
+	#k_data (json) is the data of the previous k data-points of the given currenct
+	#k is determined by the number of previous data used for training (Currently k = 5)
+	m = int(k_data['next'])
+	k_data = np.array(k_data['data'])
+	#Model directory here
+	model = torch.load('../prediction/model.pt')
+	output = []
+	with torch.no_grad():
+		for i in range(m):
+			data = Variable(torch.from_numpy(k_data))
+			out = model.forward(data)[0].cpu().float().numpy()
+			k_data.append(out)
+			output.append(out)
+			k_data = k_data[1:-1]
+	return jsonify(output)
+
 
 if __name__ == '__main__':
     app.run()

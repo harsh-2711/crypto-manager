@@ -3,17 +3,12 @@ from model import *
 from sklearn.model_selection import train_test_split
 import pandas as pd
 import time
-<<<<<<< HEAD
 import torch
 
 if __name__ == '__main__':
 
-    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-
-=======
-
-if __name__ == '__main__':
->>>>>>> 40cde8f9b7a7dae1cb782c3cd2937f7f0dd5af88
+    #device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+    '''
     TwComments = pd.read_csv('tweetsbitcoin.csv',delimiter=",", index_col=None)
     TwComments = TwComments.dropna() 
     TwComments=TwComments.drop_duplicates()
@@ -53,7 +48,7 @@ if __name__ == '__main__':
     Price.loc[Price['Price Diff'] < 0, 'Price Diff'] = 0
     Price.loc[Price['Price Diff'] > 0, 'Price Diff'] = 1
 
-    Price1 = Price[['OpTime','Log_Ret','Price Diff']]
+    Price1 = Price[['OpTime','Log_Ret','Price ']]
     Price1['Log_Ret']=np.square(Price1[['Log_Ret']])
     Price1['OpTime']= Price1['OpTime'].floordiv(1000)
 
@@ -67,6 +62,8 @@ if __name__ == '__main__':
     df['tweets'] = df['tweets'].apply(lambda x: tokenizer(x))
     
     tweets_1 = df['tweets']
+    print(tweets_1)
+    exit()
     final_tweets = []
     for t in tweets_1:
         t.insert(0, '<SOS>')
@@ -84,10 +81,13 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test = train_test_split(padded_word_indices, df['Price Diff'].values, test_size=0.1, shuffle=True)
     X_train = Variable(torch.from_numpy(X_train).long().device())
     y_train = Variable(torch.from_numpy(y_train).float().device())
+    '''
 
-    model = SimpleClassifier(100, 32).device()
-    print(model.parameters())
+    model = SimpleClassifier1(100, 32)
+    #model.save('sentiment.pt')
+    #print(model.parameters())
     mseLoss = nn.MSELoss()
     optimizer = optim.Adam(model.parameters())
-    model = train(model, X_train, y_train, mseLoss, optimizer, batch_size = 16, n_epochs = 1)
+    torch.save(model, 'sentiment.pt')
+    #model = train(model, X_train, y_train, mseLoss, optimizer, batch_size = 16, n_epochs = 1)
     
