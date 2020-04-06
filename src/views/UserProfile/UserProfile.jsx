@@ -108,7 +108,7 @@ function UserProfile({ ...props }) {
                       About me
                     </InputLabel>
                     <CustomInput
-                      labelText="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
+                      labelText="Description"
                       id="about-me"
                       formControlProps={{
                         fullWidth: true

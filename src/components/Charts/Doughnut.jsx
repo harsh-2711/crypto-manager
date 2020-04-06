@@ -80,8 +80,8 @@ export class DoughnutChart extends Component {
 				}
 			});
 		})
-		.catch(response => {
-			console.log(response);
+		.catch(err => {
+			console.log(err);
 		});
 	}
 
