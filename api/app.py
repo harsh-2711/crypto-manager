@@ -1,4 +1,5 @@
 import time
+import datetime
 from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 import urllib
@@ -8,9 +9,14 @@ import json
 import boto3
 import time
 import hashlib
+<<<<<<< HEAD
 import torch
 import numpy as np
 from torch import Variable
+=======
+import jwt
+
+>>>>>>> 62e71d6fc8bbf1389585b4ec199cc124c6be355f
 # import ssl
 # ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -34,6 +40,7 @@ dynamodb = boto3.resource('dynamodb',
 						region_name=os.getenv('REGION_NAME')
 						)
 TABLE_NAME = 'crypto-manager'
+BLACKLISTED_TABLE_NAME = 'crypto_manager_blacklisted_tokens'
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -250,6 +257,44 @@ def getMultiCryptosPriceConversions():
 
 # Ref for boto3 setup: https://medium.com/@aastha6348/easy-wizy-crud-operations-in-dynamodb-with-boto3-6d2844f150b5
 
+def encode_auth_token(user_id):
+    """
+    Generates the Auth Token
+    :return: string
+    """
+    try:
+        payload = {
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, hours=1, minutes=0, seconds=0),
+            'iat': datetime.datetime.utcnow(),
+            'sub': user_id
+        }
+        return jwt.encode(
+            payload,
+            os.getenv('JWT_SECRET_KEY'),
+            algorithm='HS256'
+        )
+    except Exception as e:
+        return e
+
+def decode_auth_token(auth_token):
+	try:
+		blacklistedTable = dynamodb.Table(BLACKLISTED_TABLE_NAME)
+		scan = blacklistedTable.scan()
+		flag = False
+		for each in scan['Items']:
+			if each['token'] == auth_token:
+				flag = True
+				break
+		if not flag:
+			payload = jwt.decode(auth_token, os.getenv('JWT_SECRET_KEY'))
+			return payload['sub']
+		else:
+			return 407
+	except jwt.ExpiredSignatureError:
+		return 405
+	except jwt.InvalidTokenError:
+		return 406
+
 # Creates a new account along with custom watchlist and portfolio
 @app.route('/user/account/create', methods=['POST'])
 @cross_origin()
@@ -262,7 +307,7 @@ def addNewUser():
 			Item = {
 				'userID': userID,
 				'email': request.form['email'],
-				'password': hashlib.sha256(request.form['email'].encode()).hexdigest(),
+				'password': hashlib.sha256(request.form['password'].encode()).hexdigest(),
 				'first_name': request.form['first_name'],
 				'last_name': request.form['last_name'],
 				'aadhar_card_no': request.form['aadhar_card_no'],
@@ -273,7 +318,9 @@ def addNewUser():
 				'current_amount': 0,
 				'p_and_l': 0,
 				'watchlist_count': 0,
-				'portfolio_count': 0
+				'portfolio_count': 0,
+				'registered_on': str(datetime.datetime.now()),
+				'is_admin': request.form['is_admin']
 			} 
 		)
 
@@ -322,11 +369,134 @@ def addNewUser():
 		
 		# TODO: Wait until the table is created (show some loading) -> It takes some time to allocate resources for a table in DynamoDB
 
-		response = jsonify(response['ResponseMetadata']['HTTPStatusCode'])
+		auth_token = encode_auth_token(str(userID))
+		response = {
+			'statusCode': 200,
+			'message': 'Successfully Registered',
+			'auth_token': auth_token.decode()
+		}
+		response = jsonify(response)
 	except Exception as e:
 		print(e)
 		response = ERR_ACC
 	return response
+
+@app.route('/user/account/login', methods=['POST'])
+@cross_origin()
+def newUserLogIn():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		hashedPassword = hashlib.sha256(request.form['password'].encode()).hexdigest()
+		scan = table.scan()
+		userID = ""
+		for each in scan['Items']:
+			if each['email'] == request.form['email'] and each['password'] == hashedPassword:
+				userID = str(each['userID'])
+				break
+		if userID !=  "":
+			auth_token = encode_auth_token(userID)
+		else:
+			auth_token = None
+		if auth_token:
+			response = {
+				'statusCode': 200,
+				'message': 'Successfully logged in',
+				'auth_token': auth_token.decode()
+			}
+			return jsonify(response)
+		else:
+			response = {
+				'statusCode': 404,
+				'message': 'User not found'
+			}
+			return jsonify(response)
+	except Exception as e:
+		print(e)
+		response = ERR_GET
+	return response
+
+@app.route('/user/details', methods=['POST'])
+@cross_origin()
+def getUserDetails():
+	try:
+		table = dynamodb.Table(TABLE_NAME)
+		authToken = request.form['Authorization']
+		if authToken and authToken != 'undefined':
+			userID = decode_auth_token(authToken)
+			if not isinstance(userID, int):
+				user = table.get_item(
+					Key = {
+						'userID': userID
+					}
+				)
+				user = user['Item']
+				response = {
+					'statusCode': 200,
+					'data' : {
+						'userID': userID,
+						'email': user['email'],
+						'first_name': user['first_name'],
+						'last_name': user['last_name'],
+						'registered_on': user['registered_on'],
+						'is_admin': user['is_admin']
+					}
+				}
+				return jsonify(response)
+			else:
+				response = {
+					'statusCode': 405,
+					'message': 'Token error'
+				}
+				return jsonify(response)
+		else:
+			response = {
+				'statusCode': 404,
+				'message': 'Not Found'
+			}
+			return jsonify(response)
+	except Exception as e:
+		print(e)
+		response = ERR_GET
+	return response
+
+@app.route('/user/account/logout', methods=['POST'])
+@cross_origin()
+def logoutUser():
+	try:
+		authToken = request.form['Authorization']
+		if authToken:
+			userID = decode_auth_token(authToken)
+			if not isinstance(userID, int):
+				blacklistedTable = dynamodb.Table(BLACKLISTED_TABLE_NAME)
+				# TODO: Check for failed response
+				blacklistedTable.put_item(
+					Item = {
+						'id': str(int(time.time())),
+						'token': authToken
+					}
+				)
+				response = {
+					'statusCode': 200,
+					'message': 'Successfully logged out'
+				}
+				return jsonify(response)
+			else:
+				response = {
+					'statusCode': 405,
+					'message': 'Token error'
+				}
+				return jsonify(response)
+		else:
+			response = {
+				'statusCode': 404,
+				'message': 'Not Found'
+			}
+			return jsonify(response)
+	except Exception as e:
+		print(e)
+		response = ERR_GET
+	return response
+
 
 # Account Related Queries
 
