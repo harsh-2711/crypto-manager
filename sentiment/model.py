@@ -5,9 +5,9 @@ import torch.nn as nn
 from torch.autograd import Variable
 
 
-class SimpleClassifier(nn.Module):
+class SimpleClassifier1(nn.Module):
     def __init__(self, input_size, hidden_size):
-        super(SimpleClassifier, self).__init__()
+        super(SimpleClassifier1, self).__init__()
         self.hidden_size = hidden_size
         self.embedding = nn.Embedding(300000, hidden_size)
         self.gru = nn.GRU(input_size = hidden_size, hidden_size = hidden_size)

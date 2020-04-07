@@ -60,6 +60,7 @@ typings/
 # Model Training
 __pycache__
 *.csv
+*.pkl
 
 # python
 venv
@@ -72,3 +73,6 @@ venv
 
 # AWS
 .aws
+
+#ML
+*.pt
