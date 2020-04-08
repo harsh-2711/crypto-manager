@@ -1,0 +1,21 @@
+.fundsMain {
+    padding: 20px;
+}
+
+.addWithdrawButtons {
+    float: center;
+    width: 100%;
+    padding-left: 32%;
+    overflow: hidden;
+    display: inline-flex;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.addFunds {
+    padding-right: 20px;
+}
+
+.withdrawFunds {
+    padding-left: 20px;
+}

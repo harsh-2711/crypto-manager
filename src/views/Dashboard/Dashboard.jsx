@@ -143,7 +143,7 @@ class Dashboard extends React.Component {
               icon={Store}
               iconColor="green"
               title="Active ICO's"
-              description="$34,245"
+              description="3"
               statIcon={DateRange}
               statText="Last 24 Hours"
             />
@@ -153,7 +153,7 @@ class Dashboard extends React.Component {
               icon={Store}
               iconColor="blue"
               title="Upcoming ICO's"
-              description="$34,245"
+              description="5"
               statIcon={DateRange}
               statText="Last 24 Hours"
             />
@@ -163,7 +163,7 @@ class Dashboard extends React.Component {
               icon={Store}
               iconColor="red"
               title="Ended ICO's"
-              description="$34,245"
+              description="14"
               statIcon={DateRange}
               statText="Last 24 Hours"
             />
@@ -173,7 +173,7 @@ class Dashboard extends React.Component {
               icon={InfoOutline}
               iconColor="red"
               title="Current P/L"
-              description="-$75"
+              description="+$7.5K"
               statIcon={LocalOffer}
               statText="Tracked from Wallet"
             />

@@ -106,31 +106,31 @@ class HeaderLinks extends React.Component {
                         onClick={this.handleClose}
                         className={classes.dropdownItem}
                       >
-                        Mike John responded to your email
+                        Your order of 10 BTC is completed
                       </MenuItem>
                       <MenuItem
                         onClick={this.handleClose}
                         className={classes.dropdownItem}
                       >
-                        You have 5 new tasks
+                        Your order of 5 ETH is rejected
                       </MenuItem>
                       <MenuItem
                         onClick={this.handleClose}
                         className={classes.dropdownItem}
                       >
-                        You're now friend with Andrew
+                        Your order of 10 BTC is placed
                       </MenuItem>
                       <MenuItem
                         onClick={this.handleClose}
                         className={classes.dropdownItem}
                       >
-                        Another Notification
+                        Your order of 2 LTC is completed
                       </MenuItem>
                       <MenuItem
                         onClick={this.handleClose}
                         className={classes.dropdownItem}
                       >
-                        Another One
+                        Your order of 2 LTC is placed
                       </MenuItem>
                     </MenuList>
                   </Paper>

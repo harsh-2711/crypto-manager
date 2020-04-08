@@ -31,11 +31,11 @@ const appRoutes = [
     component: TableList
   },
   {
-    path: "/table",
+    path: "/temp",
     sidebarName: "Recommendations",
     navbarName: "Crypto Currencies List",
     icon: Assessment,
-    component: TableList
+    component: NotificationsPage
   },
   {
     path: "/transactions",
@@ -45,11 +45,11 @@ const appRoutes = [
     component: Transactions
   },
   {
-    path: "/table",
+    path: "/temp",
     sidebarName: "Orders",
     navbarName: "Crypto Currencies List",
     icon: Receipt,
-    component: TableList
+    component: NotificationsPage
   },
   {
     path: "/user",
@@ -58,19 +58,19 @@ const appRoutes = [
     icon: Person,
     component: UserProfile
   },
+  // {
+  //   path: "/notifications",
+  //   sidebarName: "Notifications",
+  //   navbarName: "Notifications",
+  //   icon: Notifications,
+  //   component: NotificationsPage
+  // },
   {
-    path: "/notifications",
-    sidebarName: "Notifications",
-    navbarName: "Notifications",
-    icon: Notifications,
-    component: NotificationsPage
-  },
-  {
-    path: "/table",
+    path: "/temp",
     sidebarName: "Help",
-    navbarName: "Crypto Currencies List",
+    navbarName: "Help",
     icon: Help,
-    component: TableList
+    component: NotificationsPage
   },
   { redirect: true, path: "/", to: "/dashboard", navbarName: "Redirect" }
 ];

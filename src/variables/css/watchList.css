@@ -1,0 +1,138 @@
+.watchListChart {
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-right: 20px;
+    min-height: 400px;
+}
+
+.watchListGraphTitle {
+    margin-bottom: 40px;
+}
+
+select {
+    visibility: collapse;
+}
+
+label {
+    visibility: collapse;
+}
+
+.react-stockcharts-tooltip tspan {
+    font-size: 1.5em;
+}
+
+.chartModifications {
+    width: 100%;
+    position: relative;
+    display: inline-flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    float: right;
+}
+
+.tickName {
+    float: left;
+}
+
+.graphTitle {
+    display: flexbox;
+    box-sizing: content-box
+}
+
+#demo-simple-select-filled-label {
+    color: black;
+}
+
+.watchList {
+    margin-top: 50px;
+}
+
+.searchFilters {
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.searchWatchList {
+    float: left;
+}
+
+.addWatchList {
+    float: right;
+    align-content: flex-end;
+}
+
+.react-autosuggest__container {
+    position: relative;
+}
+
+.react-autosuggest__input {
+    width: 240px;
+    height: 30px;
+    padding: 10px 20px;
+    font-family: Helvetica, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+}
+
+.react-autosuggest__input--focused {
+    outline: none;
+}
+
+.react-autosuggest__input--open {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.react-autosuggest__suggestions-container {
+    display: none;
+}
+
+.react-autosuggest__suggestions-container--open {
+    display: block;
+    position: absolute;
+    top: 51px;
+    width: 280px;
+    border: 1px solid #aaa;
+    background-color: #fff;
+    font-family: Helvetica, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    z-index: 2;
+    overflow-y: scroll;
+    max-height: 15em;
+}
+
+.react-autosuggest__suggestions-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.react-autosuggest__suggestion {
+    cursor: pointer;
+    padding: 10px 20px;
+}
+
+.react-autosuggest__suggestion--highlighted {
+    background-color: #ddd;
+}
+
+.bullishTrend {
+    color: seagreen;
+    font-weight: 600;
+}
+
+.bearishTrend {
+    color: tomato;
+    font-weight: 600;
+}
+
+.watchListRow {
+    font-weight: 500;
+}

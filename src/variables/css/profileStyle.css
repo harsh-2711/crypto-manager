@@ -1,0 +1,26 @@
+.profileDetails {
+    padding: 20px;
+}
+
+.userDetails {
+    display: inline-flex;
+}
+
+.nameHeader {
+    width: 100%;
+    padding-left: 43%;
+    margin-top: 20px;
+}
+
+.secondRow {
+    margin-top: 20px;
+}
+
+.signOutButton {
+    display: inline-flex;
+    margin: 0 auto;
+    float: center;
+    width: 100%;
+    padding-left: 45%;
+    margin-bottom: 20px;
+}

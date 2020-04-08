@@ -24,28 +24,16 @@ const appRoutes = [
     component: TableList
   },
   {
-    path: "/table",
-    component: TableList
-  },
-  {
     path: "/transactions",
     component: Transactions
-  },
-  {
-    path: "/table",
-    component: TableList
   },
   {
     path: "/user",
     component: UserProfile
   },
   {
-    path: "/notifications",
+    path: "/temp",
     component: NotificationsPage
-  },
-  {
-    path: "/table",
-    component: TableList
   },
   { redirect: true, path: "/", to: "/login", navbarName: "Redirect" }
 ];

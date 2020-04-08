@@ -35,6 +35,7 @@ dynamodb = boto3.resource('dynamodb',
 						)
 TABLE_NAME = 'crypto-manager'
 BLACKLISTED_TABLE_NAME = 'crypto_manager_blacklisted_tokens'
+WATCHLIST_TABLE = 'crypto-manager-watchlist-cryptos'
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -56,7 +57,7 @@ def helloWorld():
 @app.route('/crypto/metadata/<tick>')
 @cross_origin()
 def getCryptoMetaData(tick):
-	url = "https://api.nomics.com/v1/currencies?key=" + NOMICS_API_KEY + "&ids=" + tick
+	url = "https://api.nomics.com/v1/currencies?api_key=" + NOMICS_API_KEY + "&ids=" + tick
 	try:
 		response = urllib.urlopen(url).read()
 	except Exception as e:
@@ -65,7 +66,7 @@ def getCryptoMetaData(tick):
 	return response
 
 # Returns list of available cryptos
-@app.route('/crypto/list')
+@app.route('/crypto/list', methods=['GET'])
 @cross_origin()
 def getCryptosList():
 	url = "https://min-api.cryptocompare.com/data/blockchain/list?api_key=" + CRYPTO_API_KEY
@@ -81,13 +82,53 @@ def getCryptosList():
 		response = ERR_RESP
 	return response
 
+# Get metadata for all available coins
+@app.route('/coins/data/all')
+@cross_origin()
+def getAllMetadata():
+	url = "https://min-api.cryptocompare.com/data/all/coinlist?api_key=" + NOMICS_API_KEY
+	try:
+		resp = urllib.urlopen(url)
+		jsonResp = json.load(resp)
+		if jsonResp['Response'] == 'Success':
+			response = jsonify(jsonResp['Data'])
+		else:
+			response = jsonResp['Response']
+	except Exception as e:
+		print(e)
+		response = ERR_RESP
+	return response
+
+# Get metadata from DynamoDB for watchlist
+@app.route('/coins/data/aws', methods=['GET'])
+@cross_origin()
+def getAWSMetadata():
+	watchListTable = dynamodb.Table(WATCHLIST_TABLE)
+	scan = watchListTable.scan()
+	watchListItems = []
+	try:
+		for each in scan['Items']:
+			item = {
+				'avgVol': int(each['avgVol'])/100,
+				'change': int(each['change'])/100,
+				'name': each['name'],
+				'price': int(each['price'])/100,
+				'tick': each['tick'],
+				'trend': each['trend'],
+				'volume': int(each['volume'])/100
+			}
+			watchListItems.append(item)
+		return jsonify(watchListItems)
+	except Exception as e:
+		print(e)
+		return ERR_GET
 
 ##########################
 ####### OHLCV Data #######
 ##########################
 
 # Daily tick data
-@app.route('/crypto/data/daily', methods=['GET'])
+@app.route('/crypto/data/daily', methods=['POST'])
 @cross_origin()
 def getDailyOHLCV():
 	url = "https://min-api.cryptocompare.com/data/v2/histoday?fsym=" + request.form['tick'] + "&tsym=" + request.form['currency'] + "&limit=" + request.form['limit'] + "&api_key=" + CRYPTO_API_KEY
@@ -431,6 +472,9 @@ def getUserDetails():
 						'email': user['email'],
 						'first_name': user['first_name'],
 						'last_name': user['last_name'],
+						'aadhar_card_no': user['aadhar_card_no'],
+						'pan_card_no': user['pan_card_no'],
+						'mobile_no': user['mobile_no'],
 						'registered_on': user['registered_on'],
 						'is_admin': user['is_admin']
 					}
