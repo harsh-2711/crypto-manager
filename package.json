@@ -30,8 +30,8 @@
         "react-dom": "^16.12.0",
         "react-google-maps": "^9.4.5",
         "react-router-dom": "^4.2.2",
-        "react-stockcharts": "^0.7.8",
         "react-scripts": "^3.3.1",
+        "react-stockcharts": "^0.7.8",
         "react-swipeable-views": "^0.12.12",
         "react-transition-group": "^1.2.1"
     },

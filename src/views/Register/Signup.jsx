@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import '../../variables/css/bootstrap.css';
 import '../../variables/css/registerStyle.css'
 import axios from 'axios';
-import {SnackbarContent, Snackbar} from "components"
+import {SnackbarContent} from "components"
 
 export default class SignUp extends Component {
 
@@ -60,7 +60,7 @@ export default class SignUp extends Component {
 				
 				let ctx = this;
 				var proxy = ""
-				if(process.env.NODE_ENV == "production")
+				if(process.env.NODE_ENV === "production")
 					proxy = "https://crypto-manager-prod.herokuapp.com"
 				
 				axios.post(
@@ -97,7 +97,7 @@ export default class SignUp extends Component {
             data.set('Authorization', userToken);
 
             var proxy = ""
-            if(process.env.NODE_ENV == "production")
+            if(process.env.NODE_ENV === "production")
                 proxy = "https://crypto-manager-prod.herokuapp.com"
             
             axios.post(

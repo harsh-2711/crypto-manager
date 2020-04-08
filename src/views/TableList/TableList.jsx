@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import { Typography, InputLabel, MenuItem, Select, withStyles, TextField, FormControl, Card, CardContent, CardHeader } from "material-ui";
+import { Typography, InputLabel, MenuItem, Select, withStyles, FormControl, Card, CardContent } from "material-ui";
 import Autosuggest from 'react-autosuggest';
 import axios from 'axios';
 
@@ -92,7 +92,7 @@ renderSuggestion = (suggestion) => {
       data.set('tick', suggestion);
 
       var proxy = ""
-      if(process.env.NODE_ENV == "production")
+      if(process.env.NODE_ENV === "production")
           proxy = "https://crypto-manager-prod.herokuapp.com"
 
       axios.post(
@@ -184,7 +184,7 @@ renderSuggestion = (suggestion) => {
     })
 
     var proxy = ""
-    if(process.env.NODE_ENV == "production")
+    if(process.env.NODE_ENV === "production")
         proxy = "https://crypto-manager-prod.herokuapp.com"
 
     axios.get(
@@ -240,7 +240,7 @@ renderSuggestion = (suggestion) => {
           data.set('pan_card_no', panNo);
       
           var proxy = ""
-          if(process.env.NODE_ENV == "production")
+          if(process.env.NODE_ENV === "production")
               proxy = "https://crypto-manager-prod.herokuapp.com"
       
           axios.post(

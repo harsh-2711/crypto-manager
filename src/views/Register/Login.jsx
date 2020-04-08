@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import '../../variables/css/bootstrap.css';
 import '../../variables/css/registerStyle.css'
 import axios from "axios";
-import {SnackbarContent, Snackbar} from "components"
+import {SnackbarContent} from "components"
 
 export default class Login extends Component {
 
@@ -45,7 +45,7 @@ export default class Login extends Component {
             userFormData.set('password', password);
             let ctx = this;
             var proxy = ""
-            if(process.env.NODE_ENV == "production")
+            if(process.env.NODE_ENV === "production")
                 proxy = "https://crypto-manager-prod.herokuapp.com"
             
             axios.post(
@@ -53,7 +53,7 @@ export default class Login extends Component {
                 userFormData
             )
             .then(res => {
-                if(res['data']['statusCode'] == 200) {
+                if(res['data']['statusCode'] === 200) {
                     let data = new FormData();
                     const token = res['data']['auth_token']
                     data.set('Authorization', token);
@@ -91,7 +91,7 @@ export default class Login extends Component {
             data.set('Authorization', userToken);
 
             var proxy = ""
-            if(process.env.NODE_ENV == "production")
+            if(process.env.NODE_ENV === "production")
                 proxy = "https://crypto-manager-prod.herokuapp.com"
             
             axios.post(

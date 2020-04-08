@@ -3,6 +3,7 @@ import UserProfile from "views/UserProfile/UserProfile.jsx";
 import TableList from "views/TableList/TableList.jsx";
 import Transactions from "views/Transactions/Transactions.jsx";
 import NotificationsPage from "views/Notifications/Notifications.jsx";
+import Recommendations from "views/Recommendations/Recommendations.jsx";
 
 import {
   Dashboard,
@@ -31,11 +32,11 @@ const appRoutes = [
     component: TableList
   },
   {
-    path: "/temp",
+    path: "/recommendations",
     sidebarName: "Recommendations",
-    navbarName: "Crypto Currencies List",
+    navbarName: "Recommendations",
     icon: Assessment,
-    component: NotificationsPage
+    component: Recommendations
   },
   {
     path: "/transactions",

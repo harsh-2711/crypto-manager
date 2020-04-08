@@ -1,18 +1,15 @@
 import React from "react";
-import { Grid, InputLabel, Card, CardHeader, withStyles, Typography } from "material-ui";
+import { Grid, Card, CardHeader, withStyles, Typography } from "material-ui";
 import axios from 'axios';
 import {PropTypes} from "prop-types";
 
 import {
-  ProfileCard,
-  RegularCard,
   Button,
-  CustomInput,
   ItemGrid
 } from "components";
 
 import avatar from "assets/img/faces/marc.jpg";
-import { card, boxShadow, grayColor, defaultFont } from "../../variables/styles";
+import { boxShadow } from "../../variables/styles";
 import { CardContent } from "material-ui";
 
 import "../../variables/css/profileStyle.css";
@@ -90,7 +87,7 @@ class UserProfile extends React.Component {
       data.set('Authorization', userToken);
 
       var proxy = ""
-      if(process.env.NODE_ENV == "production")
+      if(process.env.NODE_ENV === "production")
           proxy = "https://crypto-manager-prod.herokuapp.com"
       
       axios.post(

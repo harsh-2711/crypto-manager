@@ -55,7 +55,7 @@ class AppMain extends React.Component {
     return (
       <div>
         {
-          path == "/signup" || path == "/login" ?
+          path === "/signup" || path === "/login" ?
             <div className={classes.content}>
               <div className={classes.container}>{switchRoutes}</div>
             </div> :

@@ -5,6 +5,7 @@ import UserProfile from "views/UserProfile/UserProfile.jsx";
 import TableList from "views/TableList/TableList.jsx";
 import Transactions from "views/Transactions/Transactions.jsx";
 import NotificationsPage from "views/Notifications/Notifications.jsx";
+import Recommendations from "views/Recommendations/Recommendations.jsx";
 
 const appRoutes = [
   {
@@ -30,6 +31,10 @@ const appRoutes = [
   {
     path: "/user",
     component: UserProfile
+  },
+  {
+    path: "/recommendations",
+    component: Recommendations
   },
   {
     path: "/temp",

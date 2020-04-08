@@ -16,7 +16,7 @@ export class DoughnutChart extends Component {
 		userFormData.set('pan_card_no', 'abc123');
 		
 		var proxy = ""
-		if(process.env.NODE_ENV == "production")
+		if(process.env.NODE_ENV === "production")
 			proxy = "https://crypto-manager-prod.herokuapp.com"
 		
 		axios.post(
