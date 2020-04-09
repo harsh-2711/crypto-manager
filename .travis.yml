@@ -9,9 +9,9 @@ node_js:
   - "stable"
 python:
   - "2.7"
-cache:
-  directories:
-  - node_modules
+# cache:
+#   directories:
+#   - node_modules
 install:
   - pip install --user -r api/requirements.txt
 script:
