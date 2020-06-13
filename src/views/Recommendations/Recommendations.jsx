@@ -51,7 +51,7 @@ class Recommendations extends React.Component {
 		var proxy = ""
 		if(process.env.NODE_ENV === "production")
 			proxy = "https://crypto-manager-prod.herokuapp.com"
-			
+
 		axios.get(
 			proxy + '/coins/data/aws'
 		  )
@@ -99,7 +99,7 @@ class Recommendations extends React.Component {
 			if(res['data'] !== 'Error') {
 				var counter = 0;
 				for(var i in res['data']) {
-					if (res['data'][i]['sentiment'] != undefined) {
+					if (res['data'][i]['sentiment'] !== undefined) {
 						if (res['data'][i]['sentiment'] === 'bullish')
 							counter++;
 						else
@@ -113,7 +113,7 @@ class Recommendations extends React.Component {
 				else
 					this.setState({sentiment: 'Neutral'});
 			} else {
-				var counter = Math.random() * (1 - (-1)) + (-1); 
+				counter = Math.random() * (1 - (-1)) + (-1); 
 				if (counter > 0)
 					this.setState({sentiment: 'Bullish'});
 				else if (counter < 0)
@@ -123,7 +123,7 @@ class Recommendations extends React.Component {
 			}
 		})
 
-		var data = new FormData();
+		data = new FormData();
 		data.set('tick', suggestion.name);
 		data.set('currency', 'USD');
 		data.set('limit', 1);
@@ -150,9 +150,9 @@ class Recommendations extends React.Component {
 			}
 		})
 
-		var data = new FormData()
+		data = new FormData()
 		data.set('name', (this.state.currName).toLowerCase());
-		
+
 		axios.post(
 			proxy + "/coins/news",
 			data
@@ -174,7 +174,7 @@ class Recommendations extends React.Component {
 						linkArr.push(data[i]['sourceDomain']);
 						counter++;
 
-						if(counter == 3)
+						if(counter === 3)
 							break;
 					}
 					this.setState({
@@ -202,7 +202,7 @@ class Recommendations extends React.Component {
 					linkArr.push(data[i]['sourceDomain']);
 					counter++;
 
-					if(counter == 3)
+					if(counter === 3)
 						break;
 				}
 
@@ -226,7 +226,7 @@ class Recommendations extends React.Component {
 			value: newValue
 		});
 		};
-		
+
 		onSuggestionsFetchRequested = ({ value }) => {
 		this.setState({
 			suggestions: this.getSuggestions(value)
@@ -250,19 +250,19 @@ class Recommendations extends React.Component {
 		escapeRegexCharacters = (str) => {
 		return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 		}
-		
+
 		getSuggestions = (value) => {
 		const escapedValue = this.escapeRegexCharacters(value.trim());
-		
+
 		if (escapedValue === '') {
 			return [];
 		}
-		
+
 		const regex = new RegExp('^' + escapedValue, 'i');
-		
+
 		return (this.state.tickArr).filter(language => regex.test(language.name));
 		}
-		
+
 		renderSuggestion = (suggestion) => {
 		return (
 			<span>{suggestion.name}</span>
@@ -285,7 +285,7 @@ class Recommendations extends React.Component {
 		  };
 
 	render() {
-		const { shouldOpen, value, suggestions, sentiment, currName, currTick, close, open, high, low, newsAvailable, descArr, titleArr, linkArr } = this.state;
+		const { shouldOpen, value, suggestions, sentiment, currName, currTick, close, open, high, low, newsAvailable } = this.state;
 
 		const inputProps = {
 			placeholder: "Search",
@@ -442,7 +442,7 @@ class Recommendations extends React.Component {
 												<Typography variant="h3" component="h3" style={{
 													marginBottom: '20px'
 												}}>Latest News</Typography>
-											</div>	
+											</div>
 											<Card>
 												{
 													newsAvailable ?
@@ -455,7 +455,8 @@ class Recommendations extends React.Component {
 																			marginTop: '10px'
 																		}}>{row.title}</Typography>
 																		<Typography variant="h6" component="h6" style={{
-																			marginTop: '20px'
+																			marginTop: '20px',
+																			textTransform: 'capitalize'
 																		}}>{row.desc}</Typography>
 																		<a href={"https://" + row.link}>{row.link}</a>
 																		<Typography style={{
@@ -465,7 +466,7 @@ class Recommendations extends React.Component {
 																))
 															}
 														</div>
-														
+
 														<Button
 															variant="contained"
 															style={{

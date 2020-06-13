@@ -93,7 +93,7 @@ export default class Login extends Component {
             var proxy = ""
             if(process.env.NODE_ENV === "production")
                 proxy = "https://crypto-manager-prod.herokuapp.com"
-            
+
             axios.post(
                 proxy + '/user/details',
                 data
@@ -112,7 +112,7 @@ export default class Login extends Component {
             this.setState({userAlreadyLoggedIn: false});
         }
     }
-    
+
     render() {
         const { email, password, userDetailsSubmitted, errorOccured, userAlreadyLoggedIn } = this.state;
         return (
@@ -147,7 +147,7 @@ export default class Login extends Component {
                                         </div> */}
 
                                         <button type="submit" className="btn btn-primary btn-block">Submit</button>
-                                        
+
                                         <div className="already-registered">
                                             <p className="forgot-password text-right">
                                                 Not registered yet <a href="/signup">Sign up?</a>
