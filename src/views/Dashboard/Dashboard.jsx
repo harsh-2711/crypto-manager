@@ -69,9 +69,9 @@ class Dashboard extends React.Component {
             {/* Right Side */}
             <ItemGrid xs={12} sm={6}>
               <div className="dataOverview">
-                <Grid container spacing={1}>
+                <Grid container>
                   {/* Overall score */}
-                  <Grid container item xs={12} spacing={3} className="avgScoreGrid">
+                  <Grid container item xs={12} className="avgScoreGrid">
                     <div className="avgScore">
                       <div>
                         Avgerage Sentiment: 
@@ -82,7 +82,7 @@ class Dashboard extends React.Component {
                     </div>
                   </Grid>
                   {/* Technical Analysis */}
-                  <Grid container item xs={12} spacing={3}>
+                  <Grid container item xs={12}>
                     <ChartCard
                       chart={
                         <ChartistGraph
@@ -102,7 +102,7 @@ class Dashboard extends React.Component {
                     />
                   </Grid>
                   {/* Sentimental Analysis */}
-                  <Grid container item xs={12} spacing={3}>
+                  <Grid container item xs={12}>
                   <ChartCard
                     chart={
                       <ChartistGraph
@@ -133,7 +133,8 @@ class Dashboard extends React.Component {
               title="Crypto Currencies"
               description="1600/2000"
               // small="GB"
-              statIcon={"Warning"}
+              statIcon={LocalOffer}
+              statText="Tracked from Coindesk"
               // statIconColor="danger"
               // statLink={{ text: "Get More Space...", href: "#pablo" }}
             />
