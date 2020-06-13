@@ -33,7 +33,6 @@ if (userData) {
 const switchRoutes = (
   <Switch>
     {appRoutes.map((prop, key) => {
-      console.log(prop);
       if (prop.redirect)
         return <Redirect from={prop.path} to={prop.to} key={key} />;
       else if (prop.path === "/login")
@@ -42,8 +41,6 @@ const switchRoutes = (
     })}
   </Switch>
 );
-
-console.log(switchRoutes);
 
 class AppMain extends React.Component {
   state = {
