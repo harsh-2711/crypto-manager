@@ -37,6 +37,7 @@
     },
     "scripts": {
         "start": "NODE_PATH=./src react-scripts start",
+        "dev-server": "NODE_PATH=./src env-cmd react-scripts start",
         "start-api": "cd api && source venv/bin/activate && export FLASK_APP=app.py && flask run --no-debugger",
         "build": "NODE_PATH=./src react-scripts build",
         "test": "NODE_PATH=./src react-scripts test --env=jsdom",
@@ -64,5 +65,8 @@
             "last 1 safari version"
         ]
     },
-    "proxy": "http://localhost:5000"
+    "proxy": "http://localhost:5000",
+    "devDependencies": {
+        "env-cmd": "^10.1.0"
+    }
 }

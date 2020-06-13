@@ -16,15 +16,34 @@ import appStyle from "variables/styles/appStyle.jsx";
 import image from "assets/img/black.png";
 import logo from "assets/img/bitcoin.png";
 
+const PrivateRoute = ({path, isAuthenticated, ...rest}) => (
+  isAuthenticated
+  ?
+  <Route path={path} {...rest} />
+  :
+  <Redirect from={path} to="/login" />
+);
+
+var userData = localStorage.getItem('user');
+let isAuthenticated = false;
+if (userData) {
+  isAuthenticated = true;
+}
+
 const switchRoutes = (
   <Switch>
     {appRoutes.map((prop, key) => {
+      console.log(prop);
       if (prop.redirect)
         return <Redirect from={prop.path} to={prop.to} key={key} />;
-      return <Route path={prop.path} component={prop.component} key={key} />;
+      else if (prop.path === "/login")
+        return <Route path={prop.path} component={prop.component} key={key} />
+      return <PrivateRoute path={prop.path} component={prop.component} key={key} isAuthenticated={isAuthenticated}/>;
     })}
   </Switch>
 );
+
+console.log(switchRoutes);
 
 class AppMain extends React.Component {
   state = {

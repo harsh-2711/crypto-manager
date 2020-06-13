@@ -3,6 +3,7 @@ import '../../variables/css/bootstrap.css';
 import '../../variables/css/registerStyle.css'
 import axios from "axios";
 import {SnackbarContent} from "components"
+import {Redirect} from 'react-router-dom';
 
 export default class Login extends Component {
 
@@ -10,6 +11,7 @@ export default class Login extends Component {
         super(props);
 
         this.state = {
+            redirectToReferrer: false,
 			email: '',
 			password: '',
             userDetailsSubmitted: false,
@@ -21,11 +23,11 @@ export default class Login extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.userLoggedIn = this.userLoggedIn.bind(this);
     }
-    
+
     componentDidMount() {
 		this.userLoggedIn();
 	}
-	
+
 	handleChange(e) {
         const { name, value } = e.target;
         this.setState({ [name]: value });
@@ -47,7 +49,7 @@ export default class Login extends Component {
             var proxy = ""
             if(process.env.NODE_ENV === "production")
                 proxy = "https://crypto-manager-prod.herokuapp.com"
-            
+
             axios.post(
                 proxy + '/user/account/login',
                 userFormData
@@ -65,7 +67,10 @@ export default class Login extends Component {
                         var userData = res['data']['data'];
                         userData['token'] = token;
                         localStorage.setItem('user', JSON.stringify(userData));
-                        window.open("/dashboard","_self")
+                        this.setState({
+                            redirectToReferrer: true
+                        })
+                        // window.open("/dashboard","_self")
                     })
                     .catch(err => {
                         ctx.setState({errorOccured: true});
@@ -114,6 +119,14 @@ export default class Login extends Component {
     }
 
     render() {
+        const { from } = this.props.location.state || {from: {pathname: '/dashboard'}};
+        const { redirectToReferrer } = this.state;
+
+        if (redirectToReferrer) {
+            return (
+                <Redirect to={from}/>
+            )
+        }
         const { email, password, userDetailsSubmitted, errorOccured, userAlreadyLoggedIn } = this.state;
         return (
             <div>
