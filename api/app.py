@@ -10,6 +10,7 @@ import boto3
 import time
 import hashlib
 import jwt
+from crypto_news_api import CryptoControlAPI
 
 # import ssl
 # ssl._create_default_https_context = ssl._create_unverified_context
@@ -18,6 +19,7 @@ import jwt
 load_dotenv()
 CRYPTO_API_KEY = os.getenv('CRYPTO_API_KEY')
 NOMICS_API_KEY = os.getenv('NOMICS_API_KEY')
+CRYPTO_NEWS_KEY = os.getenv('CRYPTO_NEWS_API')
 
 # Errors
 ERR_RESP = "Page Not Found"
@@ -184,10 +186,10 @@ def getMinuteOHLCV():
 #######################
 
 # Trading signals for the provided tick
-@app.route('/crypto/signal/<tick>')
+@app.route('/crypto/signal', methods=['POST'])
 @cross_origin()
-def getTradingSignals(tick):
-	url = "https://min-api.cryptocompare.com/data/tradingsignals/intotheblock/latest?fsym=" + tick + "&api_key=" + CRYPTO_API_KEY
+def getTradingSignals():
+	url = "https://min-api.cryptocompare.com/data/tradingsignals/intotheblock/latest?fsym=" + request.form['tick'] + "&api_key=" + CRYPTO_API_KEY
 	try:
 		resp = urllib.urlopen(url)
 		jsonResp = json.load(resp)
@@ -251,6 +253,29 @@ def getLatestNews():
 	url = "https://min-api.cryptocompare.com/data/v2/news/?lang=EN&api_key=" + CRYPTO_API_KEY
 	try:
 		response = urllib.urlopen(url).read()
+	except Exception as e:
+		print(e)
+		response = ERR_RESP
+	return response
+
+@app.route('/crypto/news', methods=['GET'])
+@cross_origin()
+def latestNews():
+	try:
+		api = CryptoControlAPI(CRYPTO_NEWS_KEY)
+		return jsonify(api.getTopNews())
+	except Exception as e:
+		print(e)
+		response = ERR_RESP
+	return response
+
+@app.route('/coins/news', methods=['POST'])
+@cross_origin()
+def latestCoinNews():
+	try:
+		api = CryptoControlAPI(CRYPTO_NEWS_KEY)
+		res = api.getTopNewsByCoin(request.form['name'])
+		return jsonify(res)
 	except Exception as e:
 		print(e)
 		response = ERR_RESP
@@ -748,7 +773,7 @@ def addCryptoToPorfolio():
 				'tick': request.form['tick'],
 				'quantity': request.form['quantity'],
 				'investmentPrice': request.form['investmentPrice']
-			} 
+			}
 		)
 
 		response = table.update_item(

@@ -4,4 +4,47 @@
 
 .latestQuoteCard {
     padding: 10px;
+    width: 100%;
+    padding-left: 25%;
+    margin-top: 20px;
+}
+
+.noActivity {
+    height: 150px;
+}
+
+.react-autosuggest__suggestions-container--open {
+    max-height: 12em;
+}
+
+.recommendationsSearchBar {
+    width: 100%;
+}
+
+.recommendationHeader {
+    display: inline-flex;
+}
+
+.cryptoName {
+    margin-left: 20px;
+}
+
+.cryptoName1 {
+    margin-left: 45px;
+}
+
+.cryptoName2 {
+    margin-left: 48px;
+}
+
+.cryptoName3 {
+    margin-left: 56px;
+}
+
+.cryptoName4 {
+    margin-left: 61px;
+}
+
+.newsHeader {
+    margin-top: 50px;
 }

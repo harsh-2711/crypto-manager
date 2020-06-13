@@ -1,5 +1,3 @@
-describe("Sample test:", () => {
-    it("Checks addition", () => {
-        expect(2 + 2).toEqual(4);
-    });
-});
+test("Sample test:", () => {
+    expect(2 + 2).toEqual(4);
+})

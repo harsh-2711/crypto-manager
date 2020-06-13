@@ -19,3 +19,17 @@
 .withdrawFunds {
     padding-left: 20px;
 }
+
+.buySellButtons {
+    display: inline-flex;
+    width: 100%;
+    padding-left: 40%;
+}
+
+.buyButton {
+    margin-right: 20px;
+}
+
+.sellButton {
+    margin-left: 20px;
+}

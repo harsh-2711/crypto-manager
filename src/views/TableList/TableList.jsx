@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import { Typography, InputLabel, MenuItem, Select, withStyles, FormControl, Card, CardContent } from "material-ui";
+import { Typography, InputLabel, MenuItem, Select, withStyles, FormControl, Card, CardContent, Button } from "material-ui";
 import Autosuggest from 'react-autosuggest';
 import axios from 'axios';
 
@@ -322,6 +322,41 @@ renderSuggestion = (suggestion) => {
             <TypeChooser>
             {type => <Chart type={type} data={this.state.data} />}
             </TypeChooser> 
+          </CardContent>
+
+          <CardContent>
+            <div className="buySellButtons">
+            <div className="buyButton">
+              <Button
+                variant="contained"
+                style={{
+                  borderRadius: 5,
+                  backgroundColor: "#0080FF",
+                  padding: "15px 30px",
+                  fontSize: "18px",
+                  color: '#ffffff'
+              }}
+              >
+                Buy
+              </Button>
+            </div>
+
+            <div className="sellButton">
+              <Button
+                variant="contained"
+                style={{
+                  borderRadius: 5,
+                  backgroundColor: "#FF2400",
+                  padding: "15px 30px",
+                  fontSize: "18px",
+                  color: '#ffffff'
+              }}
+              >
+                Sell
+              </Button>
+            </div>
+            
+            </div>
           </CardContent>
         </Card>
         :

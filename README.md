@@ -22,7 +22,7 @@
 - Install NodeJs from [NodeJs Official Page](https://nodejs.org/en).
 - Install node dependencies: `npm install`
 - Start frontend: `npm start`
-- Start backend: `yarn start-api`
+- Start backend: `yarn start-api` or `npm run start-api`
 - Navigate to `http://localhost:3000/`
 - (optional) Run in terminal `npm i -g cross-env`
 
