@@ -75,3 +75,6 @@ venv
 
 # Local Netlify folder
 .netlify
+
+# Build folder
+build
