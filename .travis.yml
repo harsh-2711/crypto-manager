@@ -1,6 +1,6 @@
 sudo: required
 services:
-  - docker
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker fi
 
 language: node_js
 warnings_are_errors: false
@@ -21,8 +21,8 @@ script:
   - CI="" npm run build
 
 after_success:
-  - sh .travis/deploy_dockerhub.sh
-  – test "$TRAVIS_BRANCH" = "master" && sh .travis/deploy_heroku.sh
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then sh .travis/deploy_dockerhub.sh fi
+  – if [ "$TRAVIS_BRANCH" = "master" ]; then test "$TRAVIS_BRANCH" = "master" && sh .travis/deploy_heroku.sh fi
 
 deploy:
   provider: pages
