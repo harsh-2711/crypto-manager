@@ -17,7 +17,7 @@ install:
   - pip install --user -r api/requirements.txt
 script:
   - npm test
-  - pytest
+  - if [ "$TRAVIS_BRANCH" = "master" ]; pytest fi
   - CI="" npm run build
 
 after_success:
