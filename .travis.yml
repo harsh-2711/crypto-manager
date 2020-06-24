@@ -17,12 +17,12 @@ install:
   - pip install --user -r api/requirements.txt
 script:
   - npm test
-  - if [ "$TRAVIS_BRANCH" = "master" ]; pytest fi
+  - test "$TRAVIS_BRANCH" = "master" && pytest
   - CI="" npm run build
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then sh .travis/deploy_dockerhub.sh fi
-  – if [ "$TRAVIS_BRANCH" = "master" ]; then test "$TRAVIS_BRANCH" = "master" && sh .travis/deploy_heroku.sh fi
+  - test "$TRAVIS_BRANCH" = "master" && sh .travis/deploy_dockerhub.sh
+  – test "$TRAVIS_BRANCH" = "master" && sh .travis/deploy_heroku.sh
 
 deploy:
   provider: pages
