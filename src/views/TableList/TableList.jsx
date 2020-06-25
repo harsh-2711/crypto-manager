@@ -30,6 +30,7 @@ class TableList extends React.Component {
     super(props);
     this.state = {
       data: null,
+      graphTick: "BTC",
       chartType: 'candle',
       durationType: 'daily',
       value: '',
@@ -42,11 +43,14 @@ class TableList extends React.Component {
       changeList: [],
       priceList: [],
       trendList: [],
-      rows: []
+      rows: [],
+      loading: false
     }
 
     this.handleTypeChange = this.handleTypeChange.bind(this);
     this.handleDurationChange = this.handleDurationChange.bind(this);
+    this.populateChart = this.populateChart.bind(this);
+    this.handleRowClick = this.handleRowClick.bind(this);
   }
 
 escapeRegexCharacters = (str) => {
@@ -55,7 +59,7 @@ escapeRegexCharacters = (str) => {
 
 getSuggestions = (value) => {
   const escapedValue = this.escapeRegexCharacters(value.trim());
-  
+
   if (escapedValue === '') {
     return [];
   }
@@ -104,9 +108,9 @@ renderSuggestion = (suggestion) => {
     }
 
     this.setState((prevState, props) => {
-      const row = { 
+      const row = {
         tick: prevState.tickList[counter],
-        name: prevState.cryptoList[counter], 
+        name: prevState.cryptoList[counter],
         volume: prevState.volumeList[counter],
         avgVol: prevState.avgVolList[counter],
         change: prevState.changeList[counter],
@@ -127,9 +131,9 @@ renderSuggestion = (suggestion) => {
 
     if(counter < (this.state.tickList).length) {
       this.setState((prevState, props) => {
-        const row = { 
+        const row = {
           tick: prevState.tickList[counter],
-          name: prevState.cryptoList[counter], 
+          name: prevState.cryptoList[counter],
           volume: prevState.volumeList[counter],
           avgVol: prevState.avgVolList[counter],
           change: prevState.changeList[counter],
@@ -156,7 +160,7 @@ renderSuggestion = (suggestion) => {
       value: newValue
     });
   };
-  
+
   onSuggestionsFetchRequested = ({ value }) => {
     this.setState({
       suggestions: this.getSuggestions(value)
@@ -175,13 +179,75 @@ renderSuggestion = (suggestion) => {
 
   handleDurationChange = (event) => {
     this.setState({durationType: event.target.value})
+    // this.populateChart();
+  }
+
+  handleRowClick = (tick) => {
+    this.setState({ graphTick: tick });
+    this.setState({ loading: true });
+    this.populateChart();
+  }
+
+  populateChart() {
+    var tick = this.state.graphTick;
+    var duration = this.state.durationType;
+    console.log(duration);
+
+    var proxy = ""
+      if(process.env.NODE_ENV === "production")
+        proxy = "https://crypto-manager-prod.herokuapp.com"
+
+    var data = new FormData();
+    data.set("tick", tick);
+    data.set("currency", "USD");
+
+    if(duration === "daily")
+      data.set("limit", 1500);
+    else if(duration === "hourly")
+      data.set("limit", 3000);
+    else
+      data.set("limit", 5000);
+
+    axios.post(
+      proxy + '/crypto/data/' + duration,
+      data
+    )
+    .then(res => {
+      var dailyData = new Array();
+      var jsonData = res.data.Data;
+
+      for(var index in jsonData) {
+        var ohlc = {
+          "date": new Date(jsonData[index]["time"] * 1000),
+          "open": jsonData[index]["open"],
+          "high": jsonData[index]["high"],
+          "low": jsonData[index]["low"],
+          "close": jsonData[index]["close"],
+          "volume": Math.round(jsonData[index]["volumeto"] - jsonData[index]["volumefrom"]),
+          "absoluteChange": "",
+          "dividend": "",
+          "percentChange": "",
+          "split": ""
+        }
+        dailyData.push(ohlc);
+      }
+
+      this.setState({ loading: false });
+      this.setState({ data: dailyData });
+    })
+    .catch(err => {
+      console.log(err);
+
+      getData().then(data => {
+        this.setState({ loading: false });
+        this.setState({ data })
+      })
+    })
   }
 
   componentDidMount() {
 
-		getData().then(data => {
-			this.setState({ data })
-    })
+    this.populateChart();
 
     var proxy = ""
     if(process.env.NODE_ENV === "production")
@@ -233,16 +299,16 @@ renderSuggestion = (suggestion) => {
           const email = JSON.parse(userData)['email'];
           const aadharNo = JSON.parse(userData)['aadhar_card_no'];
           const panNo = JSON.parse(userData)['pan_card_no'];
-      
+
           let data = new FormData();
           data.set('email', email);
           data.set('aadhar_card_no', aadharNo);
           data.set('pan_card_no', panNo);
-      
+
           var proxy = ""
           if(process.env.NODE_ENV === "production")
               proxy = "https://crypto-manager-prod.herokuapp.com"
-      
+
           axios.post(
             proxy + '/user/watchlist/get',
             data
@@ -262,7 +328,7 @@ renderSuggestion = (suggestion) => {
 	}
 
   render() {
-    const { data, chartType, durationType, value, suggestions } = this.state;
+    const { data, chartType, durationType, graphTick, loading, value, suggestions } = this.state;
     const { classes } = this.props;
     const inputProps = {
       placeholder: "Add to watchlist",
@@ -279,7 +345,7 @@ renderSuggestion = (suggestion) => {
 
             <div className="watchListGraphTitle">
                 <div className="tickName">
-                  <Typography variant="h1" component="h3">Bitcoin</Typography>
+                  <Typography variant="h1" component="h3">{graphTick}</Typography>
                 </div>
 
                 <div className="chartModifications">
@@ -292,9 +358,9 @@ renderSuggestion = (suggestion) => {
                           id="demo-simple-select-filled"
                           value={durationType}
                           onChange={this.handleDurationChange} >
-                          <MenuItem value={'hourly'}> Hourly </MenuItem>
                           <MenuItem value={'daily'}> Daily </MenuItem>
-                          <MenuItem value={'monthly'}> Monthly </MenuItem>
+                          <MenuItem value={'hourly'}> Hourly </MenuItem>
+                          <MenuItem value={'minute'}> Minute </MenuItem>
                         </Select>
                     </FormControl>
                   </div>
@@ -312,17 +378,26 @@ renderSuggestion = (suggestion) => {
                       </Select>
                     </FormControl>
                   </div>
-                  
+
                 </div>
-              
+
             </div>
 
           </CardContent>
           <CardContent>
             <TypeChooser>
             {type => <Chart type={type} data={this.state.data} />}
-            </TypeChooser> 
+            </TypeChooser>
           </CardContent>
+
+          {
+            loading ?
+            <div className="loadingIndicator">
+              <Typography variant="h4" component="h4">Loading...</Typography>
+            </div>
+            :
+            null
+          }
 
           <CardContent>
             <div className="buySellButtons">
@@ -355,7 +430,7 @@ renderSuggestion = (suggestion) => {
                 Sell
               </Button>
             </div>
-            
+
             </div>
           </CardContent>
         </Card>
@@ -384,7 +459,7 @@ renderSuggestion = (suggestion) => {
                 </div>
 
                 <div className="addWatchList">
-                    <Autosuggest 
+                    <Autosuggest
                       suggestions={suggestions}
                       onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                       onSuggestionsClearRequested={this.onSuggestionsClearRequested}
@@ -393,7 +468,7 @@ renderSuggestion = (suggestion) => {
                       inputProps={inputProps} />
                 </div>
               </div>
-            
+
               <table className="table">
                 <thead className='thead-dark'>
                   <tr>
@@ -409,7 +484,7 @@ renderSuggestion = (suggestion) => {
                 </thead>
                 <tbody>
                   { this.state.rows.map(row => (
-                    <tr>
+                    <tr onClick={() => this.handleRowClick(row.tick)} className="watchListEntries">
                       <td className="vcenter"><input type="checkbox" id="blahA" value="1"/></td>
                       <td className="watchListRow">{row.tick}</td>
                       <td className="watchListRow">{row.name}</td>

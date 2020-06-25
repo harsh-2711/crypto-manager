@@ -147,7 +147,7 @@ def getDailyOHLCV():
 	return response
 
 # Hourly tick data
-@app.route('/crypto/data/hourly', methods=['GET'])
+@app.route('/crypto/data/hourly', methods=['POST'])
 @cross_origin()
 def getHourlyOHLCV():
 	url = "https://min-api.cryptocompare.com/data/v2/histohour?fsym=" + request.form['tick'] + "&tsym=" + request.form['currency'] + "&limit=" + request.form['limit'] + "&api_key=" + CRYPTO_API_KEY
@@ -164,7 +164,7 @@ def getHourlyOHLCV():
 	return response
 
 # Minute by minute tick data
-@app.route('/crypto/data/minute', methods=['GET'])
+@app.route('/crypto/data/minute', methods=['POST'])
 @cross_origin()
 def getMinuteOHLCV():
 	url = "https://min-api.cryptocompare.com/data/v2/histominute?fsym=" + request.form['tick'] + "&tsym=" + request.form['currency'] + "&limit=" + request.form['limit'] + "&api_key=" + CRYPTO_API_KEY
