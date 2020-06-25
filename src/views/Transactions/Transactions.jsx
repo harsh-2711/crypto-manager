@@ -6,6 +6,7 @@ import { CardContent, Typography } from "material-ui";
 import { withStyles } from "material-ui";
 import { Add, SettingsBackupRestore } from "material-ui-icons";
 import "../../variables/css/transactionStyle.css";
+import axios from 'axios';
 
 const useStyles = theme => ({
   marginColor: {
@@ -27,12 +28,87 @@ class Transaction extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      rows: []
+    }
   }
+
+  resolveRequests = (data) => {
+    var proxy = ""
+    if(process.env.NODE_ENV === "production")
+      proxy = "https://crypto-manager-prod.herokuapp.com"
+
+    let dailyDataRequest = new FormData();
+          dailyDataRequest.set('tick', data['tick']);
+          dailyDataRequest.set('limit', 1);
+          dailyDataRequest.set('currency', 'USD');
+
+          return new Promise((resolve, reject) => {
+            axios.post(
+              proxy + '/crypto/data/daily',
+              dailyDataRequest
+            )
+            .then(resp => {
+              let todayClose = resp.data.Data[1]['close'];
+              let todayOpen = resp.data.Data[1]['open'];
+              let currentValue = data['quantity'] * todayClose;
+              let todayChange = ((todayClose - todayOpen) / todayOpen) * 100;
+              let overallChange = ((todayClose - data['price']) / data['price']) * 100;
+
+              this.setState((prevState, props) => {
+                const row = {
+                  tick: data['tick'],
+                  name: data['name'],
+                  price: data['price'],
+                  investmentPrice: data['investmentPrice'],
+                  quantity: data['quantity'],
+                  currentValue: currentValue.toFixed(2),
+                  todayChange: todayChange.toFixed(2),
+                  overallChange: overallChange.toFixed(2) };
+
+                return { rows: [...prevState.rows, row] };
+              });
+
+              resolve(resp);
+            })
+            .catch(error => console.log(error))
+          })
+   }
 
   componentDidMount() {
     var proxy = ""
       if(process.env.NODE_ENV === "production")
         proxy = "https://crypto-manager-prod.herokuapp.com"
+
+    var userData = localStorage.getItem('user');
+    const email = JSON.parse(userData)['email'];
+    const aadharNo = JSON.parse(userData)['aadhar_card_no'];
+    const panNo = JSON.parse(userData)['pan_card_no'];
+
+    let data = new FormData();
+    data.set('email', email);
+    data.set('aadhar_card_no', aadharNo);
+    data.set('pan_card_no', panNo);
+
+    axios.post(
+      proxy + '/user/portfolio/get',
+      data
+    )
+    .then(res => {
+      try {
+        var promises = [];
+        res.data.map((data, i) => {
+          promises.push(this.resolveRequests(data));
+        })
+
+        Promise.all(promises).then(() => {
+          // console.log("Finished");
+        })
+      } catch (err) {
+        // pass
+      }
+    })
   }
 
   render() {
@@ -108,18 +184,6 @@ class Transaction extends React.Component {
             </ItemGrid>
 
             <ItemGrid xs={12} sm={12} md={12}>
-                {/* <RegularCard
-                    cardTitle="Current Holdings"
-                    content={
-                      <Table
-                      tableHeaderColor="primary"
-                      tableHead={["Tick", "Name", "Price", "MarketCap", "Volume(24H)", "Circulating", "1h", "24h", "Weekly"]}
-                      tableData={[
-                          ["BTC", "Bitcoin", "Oud-Turnhout", "$36,738","Dakota Rice", "Niger", "Oud-Turnhout", "$36,738", "$36,738"],
-                      ]}
-                      />
-                    }
-                /> */}
       <div className="watchList">
         <Card className="watchListChart">
           <CardContent>
@@ -147,41 +211,27 @@ class Transaction extends React.Component {
                   <tr>
                     <th scope="col">Tick</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Price</th>
+                    <th scope="col">Buy Price</th>
                     <th scope="col">Invested</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Current Value</th>
                     <th scope="col">% Change (24 hrs)</th>
+                    <th scope="col">% Change (Overall)</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td  style={{paddingLeft: "20px"}}>BTC</td>
-                    <td  style={{paddingLeft: "40px"}}>Bitcoin</td>
-                    <td  style={{paddingLeft: "40px"}}>$ 10000</td>
-                    <td  style={{paddingLeft: "40px"}}>$ 20000</td>
-                    <td  style={{paddingLeft: "50px"}}>2</td>
-                    <td  style={{paddingLeft: "50px"}}>$ 10000</td>
-                    <td  style={{paddingLeft: "60px"}}>+ 1.5%</td>
-                  </tr>
-                  <tr>
-                  <td>ETH</td>
-                    <td>Ethereum</td>
-                    <td>$ 5000</td>
-                    <td>$ 30000</td>
-                    <td>8</td>
-                    <td>$ 5800</td>
-                    <td>+ 2.5%</td>
-                  </tr>
-                  <tr>
-                  <td>LTC</td>
-                    <td>LiteCoin</td>
-                    <td>$ 1000</td>
-                    <td>$ 10000</td>
-                    <td>10</td>
-                    <td>$ 1000</td>
-                    <td>- 0.5%</td>
-                  </tr>
+                  { this.state.rows.map(row => (
+                    <tr>
+                      <td className="holdingsRow">{row.tick}</td>
+                      <td className="holdingsRow">{row.name}</td>
+                      <td className="holdingsRow">{row.price}</td>
+                      <td className="holdingsRow">{row.investmentPrice}</td>
+                      <td className="holdingsRow">{row.quantity}</td>
+                      <td className={row.overallChange > 0 ? 'bullishTrend' : (row.overallChange < 0 ? 'bearishTrend' : 'holdingsRow')}>{row.currentValue}</td>
+                      <td className={row.todayChange > 0 ? 'bullishTrend' : (row.todayChange < 0 ? 'bearishTrend' : 'holdingsRow')}>{row.todayChange + " %"}</td>
+                      <td className={row.overallChange > 0 ? 'bullishTrend' : (row.overallChange < 0 ? 'bearishTrend' : 'holdingsRow')}>{row.overallChange + " %"}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -190,7 +240,6 @@ class Transaction extends React.Component {
       </Card>
     </div>
             </ItemGrid>
-          
         </Grid>
         </div>
       </div>

@@ -946,7 +946,14 @@ def getPorfolio():
 		portfolio = []
 		scan = portfolioTable.scan()
 		for each in scan['Items']:
-			portfolio.append({'tick': each['tick'], 'quantity': int(each['quantity']), 'investmentPrice': float(each['investmentPrice'])})
+			portfolio.append({
+				'tick': each['tick'],
+				'name': each['name'],
+				'quantity': int(each['quantity']),
+				'investmentPrice': float(each['investmentPrice']),
+				'price': float(each['price']),
+				'percentChange': float(each['percentChange'])
+				})
 		return jsonify(portfolio)
 	except Exception as e:
 		print(e)
