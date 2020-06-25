@@ -4,6 +4,7 @@ import { Typography, InputLabel, MenuItem, Select, withStyles, FormControl, Card
 import Autosuggest from 'react-autosuggest';
 import axios from 'axios';
 
+import OrderPopup from "../../components/Popup/OrderPopup"
 import "../../variables/css/watchList.css"
 import "../../variables/css/bootstrap.css"
 
