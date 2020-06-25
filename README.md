@@ -55,4 +55,4 @@ For adding new backend tests, go to `tests` folder in `api` directory. Please fo
 
 ### Architecture
 
-![Architecture](https://github.com/harsh-2711/crypto-manager/blob/master/deployment-diagram/architecture.jpeg)
+![Architecture](https://github.com/harsh-2711/crypto-manager/blob/master/deployment-diagram/architecture.png)
