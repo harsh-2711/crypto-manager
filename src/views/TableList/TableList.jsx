@@ -32,6 +32,8 @@ class TableList extends React.Component {
     this.state = {
       data: null,
       graphTick: "BTC",
+      graphName: "Bitcoin",
+      percentChange: 0,
       chartType: 'candle',
       durationType: 'daily',
       value: '',
@@ -187,9 +189,8 @@ renderSuggestion = (suggestion) => {
     // this.populateChart();
   }
 
-  handleRowClick = (tick) => {
-    this.setState({ graphTick: tick });
-    this.setState({ loading: true });
+  handleRowClick = (tick, name, change) => {
+    this.setState({ graphTick: tick, graphName: name, percentChange: change, loading: true});
     this.populateChart();
   }
 
@@ -341,7 +342,7 @@ renderSuggestion = (suggestion) => {
 	}
 
   render() {
-    const { data, chartType, durationType, graphTick, loading, value, selectedStateModal, showModal, suggestions } = this.state;
+    const { data, chartType, durationType, graphName, graphTick, loading, percentChange, selectedStateModal, showModal, suggestions, value } = this.state;
     const { classes } = this.props;
     const inputProps = {
       placeholder: "Add to watchlist",
@@ -499,7 +500,7 @@ renderSuggestion = (suggestion) => {
                 </thead>
                 <tbody>
                   { this.state.rows.map(row => (
-                    <tr onClick={() => this.handleRowClick(row.tick)} className="watchListEntries">
+                    <tr onClick={() => this.handleRowClick(row.tick, row.name, row.change)} className="watchListEntries">
                       <td className="vcenter"><input type="checkbox" id="blahA" value="1"/></td>
                       <td className="watchListRow">{row.tick}</td>
                       <td className="watchListRow">{row.name}</td>
@@ -519,7 +520,7 @@ renderSuggestion = (suggestion) => {
     </div>
     {
       showModal ?
-        <OrderPopup type={selectedStateModal} tick={graphTick} callback={this.modalCallback} />
+        <OrderPopup type={selectedStateModal} tick={graphTick} name={graphName} callback={this.modalCallback} percentChange={percentChange} />
         :
         null
     }

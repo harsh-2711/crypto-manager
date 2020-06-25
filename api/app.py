@@ -771,8 +771,13 @@ def addCryptoToPorfolio():
 			Item = {
 				'id': int(time.time()),
 				'tick': request.form['tick'],
+				'name': request.form['name'],
+				'price': int(request.form['price']),
 				'quantity': request.form['quantity'],
-				'investmentPrice': request.form['investmentPrice']
+				'triggerPrice': request.form['triggerPrice'],
+				'targetPrice': request.form['targetPrice'],
+				'percentChange': request.form['percentChange'],
+				'investmentPrice': int(request.form['price']) * int(request.form['quantity'])
 			}
 		)
 
@@ -879,10 +884,10 @@ def sellCryptoFromPorfolio():
 					diffBook[key] = abs(float(value[0]) - sellPrice)
 
 				sortedDiffBook = {k: v for k, v in sorted(diffBook.items(), key=lambda item: item[1])}
-				
+
 				for key, value in sortedDiffBook.items():
 					if int(sellBook[key][1]) <= sellCount:
-						sellCount -= sellBook[key][1]
+						sellCount -= int(sellBook[key][1])
 						deletionCount += 1
 						portfolioTable.delete_item(
 							Key = {
@@ -903,7 +908,7 @@ def sellCryptoFromPorfolio():
 							ReturnValues = "UPDATED_NEW"
 						)
 						return jsonify("Order completed successfully")
-		
+
 		if deletionCount != 0:
 			response = table.update_item(
 				Key = {

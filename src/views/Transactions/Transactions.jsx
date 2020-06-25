@@ -29,6 +29,12 @@ class Transaction extends React.Component {
     super(props);
   }
 
+  componentDidMount() {
+    var proxy = ""
+      if(process.env.NODE_ENV === "production")
+        proxy = "https://crypto-manager-prod.herokuapp.com"
+  }
+
   render() {
   const { classes } = this.props;
 
@@ -37,7 +43,7 @@ class Transaction extends React.Component {
         <div className="local-bootstrap">
         <Grid container>
             <ItemGrid xs={12} sm={12} md={12}>
-              
+
               <Card className="fundsMain">
                 <Grid container>
                   <ItemGrid xs={12} sm={4} >
@@ -98,7 +104,7 @@ class Transaction extends React.Component {
                   </div>
                 </CardContent>
               </Card>
-                
+
             </ItemGrid>
 
             <ItemGrid xs={12} sm={12} md={12}>
@@ -135,7 +141,7 @@ class Transaction extends React.Component {
                 </div>
 
               </div>
-            
+
               <table className="table">
                 <thead className='thead-dark'>
                   <tr>
@@ -144,21 +150,19 @@ class Transaction extends React.Component {
                     <th scope="col">Price</th>
                     <th scope="col">Invested</th>
                     <th scope="col">Quantity</th>
-                    <th scope="col">Average</th>
+                    <th scope="col">Current Value</th>
                     <th scope="col">% Change (24 hrs)</th>
-                    <th scope="col">% Change (Overall)</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                  <td>BTC</td>
-                    <td>Bitcoin</td>
-                    <td>$ 10000</td>
-                    <td>$ 20000</td>
-                    <td>2</td>
-                    <td>$ 10000</td>
-                    <td>+ 1.5%</td>
-                    <td>- 2.5%</td>
+                    <td  style={{paddingLeft: "20px"}}>BTC</td>
+                    <td  style={{paddingLeft: "40px"}}>Bitcoin</td>
+                    <td  style={{paddingLeft: "40px"}}>$ 10000</td>
+                    <td  style={{paddingLeft: "40px"}}>$ 20000</td>
+                    <td  style={{paddingLeft: "50px"}}>2</td>
+                    <td  style={{paddingLeft: "50px"}}>$ 10000</td>
+                    <td  style={{paddingLeft: "60px"}}>+ 1.5%</td>
                   </tr>
                   <tr>
                   <td>ETH</td>
@@ -168,7 +172,6 @@ class Transaction extends React.Component {
                     <td>8</td>
                     <td>$ 5800</td>
                     <td>+ 2.5%</td>
-                    <td>+ 12.5%</td>
                   </tr>
                   <tr>
                   <td>LTC</td>
@@ -178,7 +181,6 @@ class Transaction extends React.Component {
                     <td>10</td>
                     <td>$ 1000</td>
                     <td>- 0.5%</td>
-                    <td>- 3.5%</td>
                   </tr>
                 </tbody>
               </table>

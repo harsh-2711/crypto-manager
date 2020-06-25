@@ -1,6 +1,7 @@
 import React from "react";
 import Switch from "react-switch";
 import "../../variables/css/orderPopup.css"
+import axios from "axios";
 
 import { RegularCard, Button, Table, CustomInput, ItemGrid } from "components";
 
@@ -28,7 +29,8 @@ constructor(props){
 			checked: true
 		}
 
-	this.handleChange = this.handleChange.bind(this)
+	this.handleChange = this.handleChange.bind(this);
+	this.handleOrder = this.handleOrder.bind(this);
 }
 
 handleChange(checked){
@@ -110,6 +112,68 @@ handleRadio4 = (e) => {
 	element.classList.toggle("sell");
 }
 
+handleOrder = () => {
+	var proxy = ""
+	if(process.env.NODE_ENV === "production")
+		proxy = "https://crypto-manager-prod.herokuapp.com"
+
+	if (!this.state.checked) {
+		var userData = localStorage.getItem('user');
+		const email = JSON.parse(userData)['email'];
+		const aadharNo = JSON.parse(userData)['aadhar_card_no'];
+		const panNo = JSON.parse(userData)['pan_card_no'];
+
+		let data = new FormData();
+		data.set('email', email);
+		data.set('aadhar_card_no', aadharNo);
+		data.set('pan_card_no', panNo);
+		data.set('tick', this.props.tick);
+		data.set('name', this.props.name);
+		data.set('quantity', parseInt(document.getElementById("qtyb").value));
+		data.set('price', parseInt(document.getElementById("pricebuy").value));
+		data.set('triggerPrice', parseInt(document.getElementById("triggerbuy").value));
+		data.set('targetPrice', parseInt(document.getElementById("targetbuy").value));
+		data.set('percentChange', this.props.percentChange);
+
+		axios.post(
+			proxy + '/user/portfolio/add',
+			data
+		)
+		.then(res => {
+			// send notification
+		})
+		.catch(err => {
+			console.log(err);
+		})
+	} else {
+		var userData = localStorage.getItem('user');
+		const email = JSON.parse(userData)['email'];
+		const aadharNo = JSON.parse(userData)['aadhar_card_no'];
+		const panNo = JSON.parse(userData)['pan_card_no'];
+
+		let data = new FormData();
+		data.set('email', email);
+		data.set('aadhar_card_no', aadharNo);
+		data.set('pan_card_no', panNo);
+		data.set('tick', this.props.tick);
+		data.set('quantity', parseInt(document.getElementById("qtys").value));
+		data.set('price', parseInt(document.getElementById("pricesell").value));
+
+		axios.post(
+			proxy + '/user/portfolio/sell',
+			data
+		)
+		.then(res => {
+			// send notification
+		})
+		.catch(err => {
+			console.log(err);
+		})
+	}
+
+	this.props.callback();
+}
+
 	render() {
 		var tick = this.props.tick;
 	return (
@@ -150,9 +214,9 @@ handleRadio4 = (e) => {
 				{/* <label className="slmb order" for="SL-Mb">SL-M</label> */}
 				</div>
 				<div className="pricing">
-				<span className=" tag">Price :</span><input className="input-number buynumber priceb" type="number" min="0" step="1" defaultValue="0" required/>
-				<span className=" tag">Trigger Price :</span><input className="input-number buynumber triggerpriceb" type="number" min="0" step="1" defaultValue="0" required/>
-				<span className=" tag">Target Price :</span><input className="input-number buynumber targetpriceb" type="number" min="0" step="1" defaultValue="0" required/>
+				<span className=" tag">Price :</span><input className="input-number buynumber priceb" id="pricebuy" type="number" min="0" step="1" defaultValue="0" required/>
+				<span className=" tag">Trigger Price :</span><input className="input-number buynumber triggerpriceb" id="triggerbuy" type="number" min="0" step="1" defaultValue="0" required/>
+				<span className=" tag">Target Price :</span><input className="input-number buynumber targetpriceb" id="targetbuy" type="number" min="0" step="1" defaultValue="0" required/>
 				</div>
 				<div className="validity">
 				<span className="dayb order">DAY</span><input className="buyradio" type="radio" id="DAYb" name="validity" value="dayb" onClick={this.handleRadio2} required/>
@@ -161,7 +225,7 @@ handleRadio4 = (e) => {
 				{/* <label className="iocb order" for="IOCb">IOC</label> */}
 				</div>
 				<div className="footer">
-				<Button onClick={this.props.callback} type="submit" form="buyForm" id="buyBtn">Buy</Button>
+				<Button onClick={this.handleOrder} type="submit" form="buyForm" id="buyBtn">Buy</Button>
 				<Button onClick={this.props.callback} id="clsBtn">close</Button>
 				</div>
 			</form>
@@ -179,7 +243,7 @@ handleRadio4 = (e) => {
 				{/* <label className="slms order" for="SL-Ms">SL-M</label> */}
 				</div>
 				<div className="pricing">
-				<span className=" tag">Price :</span><input className="input-number sellnumber prices" type="number" min="0" step="1" defaultValue="0" required/>
+				<span className=" tag">Price :</span><input className="input-number sellnumber prices" id="pricesell" type="number" min="0" step="1" defaultValue="0" required/>
 				<span className=" tag">Trigger Price :</span><input className="input-number sellnumber triggerprices" type="number" min="0" step="1" defaultValue="0" required/>
 				<span className=" tag">Target Price :</span><input className="input-number sellnumber targetprices" type="number" min="0" step="1" defaultValue="0" required/>
 				</div>
@@ -190,7 +254,7 @@ handleRadio4 = (e) => {
 				{/* <label className="iocs order" for="IOCs">IOC</label> */}
 				</div>
 				<div className="footer">
-				<Button onClick={this.props.callback} type="submit" form="sellForm" color="danger" id="sellBtn">Sell</Button>
+				<Button onClick={this.handleOrder} type="submit" form="sellForm" color="danger" id="sellBtn">Sell</Button>
 				<Button onClick={this.props.callback} id="clsBtn" >close</Button>
 				</div>
 
