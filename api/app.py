@@ -147,7 +147,7 @@ def getDailyOHLCV():
 	return response
 
 # Hourly tick data
-@app.route('/crypto/data/hourly', methods=['GET'])
+@app.route('/crypto/data/hourly', methods=['POST'])
 @cross_origin()
 def getHourlyOHLCV():
 	url = "https://min-api.cryptocompare.com/data/v2/histohour?fsym=" + request.form['tick'] + "&tsym=" + request.form['currency'] + "&limit=" + request.form['limit'] + "&api_key=" + CRYPTO_API_KEY
@@ -164,7 +164,7 @@ def getHourlyOHLCV():
 	return response
 
 # Minute by minute tick data
-@app.route('/crypto/data/minute', methods=['GET'])
+@app.route('/crypto/data/minute', methods=['POST'])
 @cross_origin()
 def getMinuteOHLCV():
 	url = "https://min-api.cryptocompare.com/data/v2/histominute?fsym=" + request.form['tick'] + "&tsym=" + request.form['currency'] + "&limit=" + request.form['limit'] + "&api_key=" + CRYPTO_API_KEY
@@ -771,8 +771,13 @@ def addCryptoToPorfolio():
 			Item = {
 				'id': int(time.time()),
 				'tick': request.form['tick'],
+				'name': request.form['name'],
+				'price': int(request.form['price']),
 				'quantity': request.form['quantity'],
-				'investmentPrice': request.form['investmentPrice']
+				'triggerPrice': request.form['triggerPrice'],
+				'targetPrice': request.form['targetPrice'],
+				'percentChange': request.form['percentChange'],
+				'investmentPrice': int(request.form['price']) * int(request.form['quantity'])
 			}
 		)
 
@@ -879,10 +884,10 @@ def sellCryptoFromPorfolio():
 					diffBook[key] = abs(float(value[0]) - sellPrice)
 
 				sortedDiffBook = {k: v for k, v in sorted(diffBook.items(), key=lambda item: item[1])}
-				
+
 				for key, value in sortedDiffBook.items():
 					if int(sellBook[key][1]) <= sellCount:
-						sellCount -= sellBook[key][1]
+						sellCount -= int(sellBook[key][1])
 						deletionCount += 1
 						portfolioTable.delete_item(
 							Key = {
@@ -903,7 +908,7 @@ def sellCryptoFromPorfolio():
 							ReturnValues = "UPDATED_NEW"
 						)
 						return jsonify("Order completed successfully")
-		
+
 		if deletionCount != 0:
 			response = table.update_item(
 				Key = {
@@ -941,7 +946,14 @@ def getPorfolio():
 		portfolio = []
 		scan = portfolioTable.scan()
 		for each in scan['Items']:
-			portfolio.append({'tick': each['tick'], 'quantity': int(each['quantity']), 'investmentPrice': float(each['investmentPrice'])})
+			portfolio.append({
+				'tick': each['tick'],
+				'name': each['name'],
+				'quantity': int(each['quantity']),
+				'investmentPrice': float(each['investmentPrice']),
+				'price': float(each['price']),
+				'percentChange': float(each['percentChange'])
+				})
 		return jsonify(portfolio)
 	except Exception as e:
 		print(e)

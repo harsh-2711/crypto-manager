@@ -33,3 +33,17 @@
 .sellButton {
     margin-left: 20px;
 }
+
+.bullishTrend {
+    color: seagreen;
+    font-weight: 600;
+}
+
+.bearishTrend {
+    color: tomato;
+    font-weight: 600;
+}
+
+.holdingsRow {
+    font-weight: 500;
+}

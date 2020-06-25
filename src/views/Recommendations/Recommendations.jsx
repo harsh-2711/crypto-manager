@@ -18,14 +18,14 @@ import {
   } from "components";
 
   import {
-	AccessTime,	
+	AccessTime,
   } from "material-ui-icons";
 import { Button } from "material-ui";
-  
+
 class Recommendations extends React.Component {
 	constructor(props) {
 		super(props);
-		
+
 		this.state = {
 			shouldOpen: false,
 			value: '',

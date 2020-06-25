@@ -12,8 +12,7 @@ import {
   Update,
   ArrowUpward,
   AccessTime,
-  Accessibility,
-  
+  Accessibility
 } from "material-ui-icons";
 import { withStyles, Grid, Card, CardHeader, CardContent, Typography } from "material-ui";
 

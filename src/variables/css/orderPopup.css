@@ -1,0 +1,243 @@
+h1 {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body,
+.app {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    font-family: Verdana;
+}
+
+.popup {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    background-color: #000;
+    opacity: 0.75;
+    z-index: 900;
+}
+
+.popup_inner {
+    position: absolute;
+    height: 265px;
+    width: 580px;
+    left: 27%;
+    right: 70%;
+    top: 8%;
+    bottom: 7%;
+    margin: auto;
+    background: white;
+    z-index: 1000;
+}
+
+.react-switch {
+    /* left:75%; */
+    float: right;
+    margin: auto;
+}
+
+.navbar {
+    height: 60px;
+    padding: 15px;
+    padding-right: 50px;
+    /* background-color: rgba(82, 70, 185); */
+}
+
+#buyForm {
+    padding: 10px;
+}
+
+#sellForm {
+    padding: 10px;
+}
+
+.pricing {
+    margin-top: 15px;
+}
+
+.red {
+    background-color: rgb(244, 67, 54);
+}
+
+.type,
+.crypto {
+    margin-left: 5%;
+    color: white;
+    font-size: 18px;
+}
+
+.crypto {
+    font-weight: bold;
+}
+
+.buy {
+    color: rgba(82, 70, 185);
+}
+
+.sell {
+    color: rgb(244, 67, 54);
+}
+
+.tag {
+    margin: 0% 0% 1% 2%;
+}
+
+.input-number {
+    border-radius: 5px;
+    text-align: center;
+    width: 10%;
+    margin: 2% 0% 1% 2%;
+    padding: 1% 0% 1% 0%;
+}
+
+.buynumber {
+    border-color: rgba(82, 70, 185);
+    /* color:rgba(82,70,185); */
+}
+
+.sellnumber {
+    border-color: rgb(244, 67, 54);
+    /* color:rgb(244, 67, 54); */
+}
+
+.input-radio {
+    float: right;
+    /* width:35%; */
+    margin: 2% 2% 0% 0%;
+}
+
+.order {
+    margin-right: 5px;
+    margin-left: 25px;
+    color: #000000;
+}
+
+.validity {
+    float: left;
+    width: 30%;
+    margin: 4% 0% 0% -1.5%;
+}
+
+#buyBtn {
+    background-color: rgba(82, 70, 185);
+}
+
+#clsBtn {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+}
+
+.footer {
+    float: right;
+    margin-right: 1%;
+    margin-top: 25px;
+}
+
+#clsBtn {
+    margin-left: 20px;
+    font-size: 15px;
+}
+
+#buyBtn {
+    font-size: 15px;
+}
+
+#sellBtn {
+    font-size: 15px;
+}
+
+@media only screen and (max-height: 575px) {
+    .popup_inner {
+        position: absolute;
+        height: 225px;
+        width: 500px;
+        left: 38%;
+        right: 15%;
+        top: 60%;
+        bottom: 30%;
+        margin: auto;
+        background: white;
+    }
+}
+
+@media only screen and (max-width: 960px) {
+    .popup_inner {
+        position: absolute;
+        height: 225px;
+        width: 500px;
+        left: 15%;
+        right: 27%;
+        top: 65%;
+        bottom: 7%;
+        margin: auto;
+        background: white;
+        /* overflow:scroll; */
+    }
+    .validity {
+        float: left;
+        width: 40%;
+        margin: 1% 0% 0% 1.5%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .popup_inner {
+        position: absolute;
+        height: 270px;
+        width: 310px;
+        left: 0%;
+        right: 1%;
+        top: 65%;
+        bottom: 7%;
+        margin: auto;
+        background: white;
+        /* overflow: scroll; */
+    }
+    .input-radio {
+        float: left;
+        margin: 2% 2% 0% 2%;
+    }
+    .pricing {
+        float: left;
+    }
+    .validity {
+        width: 100%
+    }
+}
+
+@media only screen and (max-height: 630px) and (max-width: 700px) {
+    .popup_inner {
+        position: absolute;
+        height: 270px;
+        width: 310px;
+        left: 0%;
+        right: 1%;
+        top: 65%;
+        bottom: 50%;
+        margin: auto;
+        background: white;
+    }
+    .input-radio {
+        float: left;
+        margin: 2% 2% 0% 2%;
+    }
+    .pricing {
+        float: left;
+    }
+    .validity {
+        width: 100%
+    }
+}

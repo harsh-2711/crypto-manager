@@ -1,6 +1,6 @@
 sudo: required
 services:
-  - docker
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker fi
 
 language: node_js
 warnings_are_errors: false
@@ -17,11 +17,11 @@ install:
   - pip install --user -r api/requirements.txt
 script:
   - npm test
-  - pytest
+  - if [ "$TRAVIS_BRANCH" = "master" || "$TRAVIS_PULL_REQUEST" = "false" ]; then pytest; fi
   - CI="" npm run build
 
 after_success:
-  - sh .travis/deploy_dockerhub.sh
+  - test "$TRAVIS_BRANCH" = "master" && sh .travis/deploy_dockerhub.sh
   – test "$TRAVIS_BRANCH" = "master" && sh .travis/deploy_heroku.sh
 
 deploy:
