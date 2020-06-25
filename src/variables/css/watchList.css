@@ -136,3 +136,14 @@ label {
 .watchListRow {
     font-weight: 500;
 }
+
+.watchListEntries:hover {
+    cursor: pointer;
+}
+
+.loadingIndicator {
+    /* display: flexbox; */
+    width: 10%;
+    margin: auto;
+    margin-bottom: 40px;
+}

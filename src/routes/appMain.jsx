@@ -45,13 +45,13 @@ const appRoutes = [
     icon: AttachMoney,
     component: Transactions
   },
-  {
-    path: "/temp",
-    sidebarName: "Orders",
-    navbarName: "Crypto Currencies List",
-    icon: Receipt,
-    component: NotificationsPage
-  },
+  // {
+  //   path: "/temp",
+  //   sidebarName: "Orders",
+  //   navbarName: "Crypto Currencies List",
+  //   icon: Receipt,
+  //   component: NotificationsPage
+  // },
   {
     path: "/user",
     sidebarName: "User Profile",
@@ -66,13 +66,13 @@ const appRoutes = [
   //   icon: Notifications,
   //   component: NotificationsPage
   // },
-  {
-    path: "/temp",
-    sidebarName: "Help",
-    navbarName: "Help",
-    icon: Help,
-    component: NotificationsPage
-  },
+  // {
+  //   path: "/temp",
+  //   sidebarName: "Help",
+  //   navbarName: "Help",
+  //   icon: Help,
+  //   component: NotificationsPage
+  // },
   { redirect: true, path: "/", to: "/dashboard", navbarName: "Redirect" }
 ];
 
