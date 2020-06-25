@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/crypto-manager/static/css/main.c6eaa3a0.chunk.css",
+    "main.js": "/crypto-manager/static/js/main.db22b910.chunk.js",
+    "main.js.map": "/crypto-manager/static/js/main.db22b910.chunk.js.map",
+    "runtime-main.js": "/crypto-manager/static/js/runtime-main.3433c71d.js",
+    "runtime-main.js.map": "/crypto-manager/static/js/runtime-main.3433c71d.js.map",
+    "static/css/2.bfa6f0c0.chunk.css": "/crypto-manager/static/css/2.bfa6f0c0.chunk.css",
+    "static/js/2.08d9ff52.chunk.js": "/crypto-manager/static/js/2.08d9ff52.chunk.js",
+    "static/js/2.08d9ff52.chunk.js.map": "/crypto-manager/static/js/2.08d9ff52.chunk.js.map",
+    "index.html": "/crypto-manager/index.html",
+    "precache-manifest.e8d2d1fb58b167b1e4251a29f43b1a56.js": "/crypto-manager/precache-manifest.e8d2d1fb58b167b1e4251a29f43b1a56.js",
+    "service-worker.js": "/crypto-manager/service-worker.js",
+    "static/css/2.bfa6f0c0.chunk.css.map": "/crypto-manager/static/css/2.bfa6f0c0.chunk.css.map",
+    "static/css/main.c6eaa3a0.chunk.css.map": "/crypto-manager/static/css/main.c6eaa3a0.chunk.css.map",
+    "static/js/2.08d9ff52.chunk.js.LICENSE.txt": "/crypto-manager/static/js/2.08d9ff52.chunk.js.LICENSE.txt",
+    "static/media/bitcoin.png": "/crypto-manager/static/media/bitcoin.fe9bc614.png",
+    "static/media/marc.jpg": "/crypto-manager/static/media/marc.8880a65c.jpg",
+    "static/media/sidebar-2.jpg": "/crypto-manager/static/media/sidebar-2.310509c9.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3433c71d.js",
+    "static/css/2.bfa6f0c0.chunk.css",
+    "static/js/2.08d9ff52.chunk.js",
+    "static/css/main.c6eaa3a0.chunk.css",
+    "static/js/main.db22b910.chunk.js"
+  ]
+}
