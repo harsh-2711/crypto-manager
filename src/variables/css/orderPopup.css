@@ -23,30 +23,48 @@ body,
     right: 0;
     bottom: 0;
     margin: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    background-color: #000;
+    opacity: 0.75;
+    z-index: 900;
 }
 
 .popup_inner {
     position: absolute;
-    height: 225px;
-    width: 538px;
-    left: 38%;
-    right: 27%;
-    top: 65%;
+    height: 265px;
+    width: 580px;
+    left: 27%;
+    right: 70%;
+    top: 8%;
     bottom: 7%;
     margin: auto;
     background: white;
+    z-index: 1000;
 }
 
 .react-switch {
     /* left:75%; */
     float: right;
-    margin: 2% 2% 2% 0%;
+    margin: auto;
 }
 
 .navbar {
-    height: 50px;
-    background-color: rgba(82, 70, 185);
+    height: 60px;
+    padding: 15px;
+    padding-right: 50px;
+    /* background-color: rgba(82, 70, 185); */
+}
+
+#buyForm {
+    padding: 10px;
+}
+
+#sellForm {
+    padding: 10px;
+}
+
+.pricing {
+    margin-top: 15px;
 }
 
 .red {
@@ -57,6 +75,10 @@ body,
 .crypto {
     margin-left: 5%;
     color: white;
+    font-size: 18px;
+}
+
+.crypto {
     font-weight: bold;
 }
 
@@ -93,17 +115,19 @@ body,
 .input-radio {
     float: right;
     /* width:35%; */
-    margin: 2% 2% 0% 2%;
+    margin: 2% 2% 0% 0%;
 }
 
 .order {
-    margin-right: 15px;
+    margin-right: 5px;
+    margin-left: 25px;
+    color: #000000;
 }
 
 .validity {
     float: left;
     width: 30%;
-    margin: 1% 0% 0% 1.5%;
+    margin: 4% 0% 0% -1.5%;
 }
 
 #buyBtn {
@@ -119,6 +143,20 @@ body,
 .footer {
     float: right;
     margin-right: 1%;
+    margin-top: 25px;
+}
+
+#clsBtn {
+    margin-left: 20px;
+    font-size: 15px;
+}
+
+#buyBtn {
+    font-size: 15px;
+}
+
+#sellBtn {
+    font-size: 15px;
 }
 
 @media only screen and (max-height: 575px) {

@@ -45,13 +45,17 @@ class TableList extends React.Component {
       priceList: [],
       trendList: [],
       rows: [],
-      loading: false
+      loading: false,
+      showModal: false,
+      selectedStateModal: ""
     }
 
     this.handleTypeChange = this.handleTypeChange.bind(this);
     this.handleDurationChange = this.handleDurationChange.bind(this);
     this.populateChart = this.populateChart.bind(this);
     this.handleRowClick = this.handleRowClick.bind(this);
+    this.handleOrder = this.handleOrder.bind(this);
+    this.modalCallback = this.modalCallback.bind(this);
   }
 
 escapeRegexCharacters = (str) => {
@@ -187,6 +191,14 @@ renderSuggestion = (suggestion) => {
     this.setState({ graphTick: tick });
     this.setState({ loading: true });
     this.populateChart();
+  }
+
+  handleOrder = (orderType) => {
+    this.setState({ showModal: true, selectedStateModal: orderType });
+  }
+
+  modalCallback = () => {
+    this.setState({ showModal: false});
   }
 
   populateChart() {
@@ -329,7 +341,7 @@ renderSuggestion = (suggestion) => {
 	}
 
   render() {
-    const { data, chartType, durationType, graphTick, loading, value, suggestions } = this.state;
+    const { data, chartType, durationType, graphTick, loading, value, selectedStateModal, showModal, suggestions } = this.state;
     const { classes } = this.props;
     const inputProps = {
       placeholder: "Add to watchlist",
@@ -404,6 +416,7 @@ renderSuggestion = (suggestion) => {
             <div className="buySellButtons">
             <div className="buyButton">
               <Button
+                onClick={() => this.handleOrder("buy")}
                 variant="contained"
                 style={{
                   borderRadius: 5,
@@ -419,6 +432,7 @@ renderSuggestion = (suggestion) => {
 
             <div className="sellButton">
               <Button
+                onClick={() => this.handleOrder("sell")}
                 variant="contained"
                 style={{
                   borderRadius: 5,
@@ -503,6 +517,12 @@ renderSuggestion = (suggestion) => {
         </CardContent>
       </Card>
     </div>
+    {
+      showModal ?
+        <OrderPopup type={selectedStateModal} tick={graphTick} callback={this.modalCallback} />
+        :
+        null
+    }
     </div>
 		)
 	}
