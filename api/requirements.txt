@@ -12,7 +12,7 @@ contextlib2==0.6.0.post1
 crypto-news-api==2.3.1
 docutils==0.15.2
 Flask==1.0
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 funcsigs==1.0.2
 futures==3.3.0
 gunicorn==19.10.0
