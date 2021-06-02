@@ -39,7 +39,7 @@ scandir==1.10.0
 six==1.14.0
 soupsieve==1.9.5
 typing==3.7.4.1
-urllib3==1.25.8
+urllib3==1.26.5
 wcwidth==0.1.9
 Werkzeug==1.0.0
 zipp==1.2.0
